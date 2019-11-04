@@ -13,20 +13,23 @@ void setup(){
   };
   
   //Create vertex buffer
-  GLuint vertexArrayID;
-  glGenVertexArrays(1, &vertexArrayID);
-  glBindVertexArray(vertexArrayID);
   unsigned int buffer;
   glGenBuffers(1, &buffer); //Generate new buffer
+  printGlError("GenBuffers");
   glBindBuffer(GL_ARRAY_BUFFER, buffer); //Specify kind of buffer
+  printGlError("BindBuffers");
   glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW); //Put information into buffer
+  printGlError("BufferData");
   
   glEnableVertexAttribArray(0);
+  printGlError("VertexAttrib");
   
   //adress of vertex array, size of each vertex, type value, is it normalized?, stride,             offset
   glVertexAttribPointer(0, 2,                     GL_FLOAT, GL_FALSE,           sizeof(float) * 2, (const void*)0);
+  printGlError("VertexAttribPointer");
   
   glBindBuffer(GL_ARRAY_BUFFER, 0);
+  printGlError("BindBuffer");
   
   Shader triangleShader = Shader(
   R"(
@@ -46,13 +49,16 @@ void setup(){
   }
   )");
   triangleShader.use();
+  
+  glClearColor(0.5,0.5,1.0,1.0);
 }
 
 void loop(){
   glClear(GL_COLOR_BUFFER_BIT);
+  //printGlError("glClear");
   
   glDrawArrays(GL_TRIANGLES, 0, 3);
-  //glDrawElements(GL_TRIANGLES, 3);
+  //printGlError("glDrawArrays");
 }
 
 int main(void){

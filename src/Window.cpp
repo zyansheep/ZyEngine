@@ -25,6 +25,7 @@ public:
     
     glfwMakeContextCurrent(window);
     gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
+    
     glfwSwapInterval(1);
     
     //Special enable glsl 3.3 sauce

@@ -6,22 +6,26 @@
 
 class Shader {
 public:
-  Shader(const std::string& vertexShader, const std::string& fragmentShader)
-  : Shader(2, (unsigned int[]){GL_VERTEX_SHADER, GL_FRAGMENT_SHADER}, (std::string[]){vertexShader, fragmentShader}) {
-    
-  }
-  Shader(unsigned int count, unsigned int* typeArray, std::string* sourceArray){
+  Shader(const std::string& vertexShader, const std::string& fragmentShader){
     program = glCreateProgram();
     printGlError("glCreateProgram");
-    for(int i=0;i<count;i++){
-      unsigned int id = CompileShader(typeArray[i], sourceArray[i]);
-      if(id == 0){
-        std::cout << "[Shader] Compile Error for type:" << typeArray[i] << '\n';
-        return;
-      }
-      glAttachShader(program, id);
-      printGlError("AttachShader");
+    
+    unsigned int vertexId = CompileShader(GL_VERTEX_SHADER, vertexShader);
+    if(vertexId == 0){
+      std::cout << "[Shader] Compile Error for type: GL_VERTEX_SHADER" << '\n';
+      return;
     }
+    glAttachShader(program, vertexId);
+    printGlError("AttachShader");
+    
+    unsigned int fragmentId = CompileShader(GL_VERTEX_SHADER, fragmentShader);
+    if(fragmentId == 0){
+      std::cout << "[Shader] Compile Error for type: GL_FRAGMENT_SHADER" << '\n';
+      return;
+    }
+    glAttachShader(program, fragmentId);
+    printGlError("AttachShader");
+    
     
     glLinkProgram(program);
     printGlError("LinkProgram");

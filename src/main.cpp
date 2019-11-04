@@ -1,42 +1,61 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <stdio.h>
+#include <iostream>
+#include "Window.cpp"
+#include "Shader.cpp"
 
-int main(void)
-{
-  GLFWwindow* window;
+Window window = Window(600,600, "Neural Molecular Dynamics");
+void setup(){
+  //Triangle vertex positions
+  printf("OpenGL version is (%s)\n", glGetString(GL_VERSION));
+  float positions[6] = {
+    -0.5f, -0.5f,
+    0.0f, 0.5f,
+    0.5f, -0.5f
+  };
   
-  /* Initialize the library */
-  if (!glfwInit())
-  return -1;
+  //Create vertex buffer
+  GLuint vertexArrayID;
+  glGenVertexArrays(1, &vertexArrayID);
+  glBindVertexArray(vertexArrayID);
+  unsigned int buffer;
+  glGenBuffers(1, &buffer); //Generate new buffer
+  glBindBuffer(GL_ARRAY_BUFFER, buffer); //Specify kind of buffer
+  glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW); //Put information into buffer
   
-  /* Create a windowed mode window and its OpenGL context */
-  window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
-  if (!window)
-  {
-    glfwTerminate();
-    return -1;
+  glEnableVertexAttribArray(0);
+  
+  //adress of vertex array, size of each vertex, type value, is it normalized?, stride,             offset
+  glVertexAttribPointer(0, 2,                     GL_FLOAT, GL_FALSE,           sizeof(float) * 2, (const void*)0);
+  
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  
+  Shader triangleShader = Shader(
+  R"(
+  #version 330 core
+
+  layout(location = 0) in vec4 position;
+
+  void main(){
+    gl_Position = position;
   }
-  
-  /* Make the window's context current */
-  glfwMakeContextCurrent(window);
-  gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
-  printf("OpenGL version %s\n", glGetString(GL_VERSION));
-  glfwSwapInterval(1);
-  /* Loop until the user closes the window */
-  while (!glfwWindowShouldClose(window))
-  {
-    /* Render here */
-    glClearColor(sin(glfwGetTime()));
-    glClear(GL_COLOR_BUFFER_BIT);
-    
-    /* Swap front and back buffers */
-    glfwSwapBuffers(window);
-    
-    /* Poll for and process events */
-    glfwPollEvents();
+  )", R"(
+  #version 330 core
+  layout(location = 0) out vec4 color;
+
+  void main(){
+    color = vec4(1.0, 0.0, 1.0, 1.0);
   }
+  )");
+  triangleShader.use();
+}
+
+void loop(){
+  glClear(GL_COLOR_BUFFER_BIT);
   
-  glfwTerminate();
-  return 0;
+  glDrawArrays(GL_TRIANGLES, 0, 3);
+  //glDrawElements(GL_TRIANGLES, 3);
+}
+
+int main(void){
+  setup();
+  window.start(loop);
 }

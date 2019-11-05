@@ -17,7 +17,7 @@ file(GLOB_RECURSE SOURCES src/*.cpp)
 file(GLOB_RECURSE HEADERS src/*.h)
 
 #add those files to a list
-source_group (TREE src PREFIX "" FILES ${SOURCES} ${HEADERS})
+source_group (TREE ${CMAKE_SOURCE_DIR}/src PREFIX "" FILES ${SOURCES} ${HEADERS})
 
 #define executable
 add_executable (OpenGLPlay ${SOURCES} ${HEADERS} glad/src/glad.c)

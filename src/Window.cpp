@@ -53,6 +53,9 @@ public:
       
       /* Poll for and process events */
       glfwPollEvents();
+      
+      if(glfwGetKey(window, GLFW_KEY_ESCAPE))
+        glfwSetWindowShouldClose(window, 1);
     }
     
     glfwTerminate();
@@ -61,7 +64,5 @@ public:
   void setVerticalSync(bool val){
     glfwSwapInterval((int)val);
   }
-  void soemthing(){}
-  
   
 };

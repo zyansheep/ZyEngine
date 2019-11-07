@@ -73,6 +73,7 @@ static unsigned int LoadShaders(const char * vertex_file_path,const char * fragm
 	GLuint ProgramID = glCreateProgram();
 	glAttachShader(ProgramID, VertexShaderID);
 	glAttachShader(ProgramID, FragmentShaderID);
+	
 	glLinkProgram(ProgramID);
 
 	// Check the program

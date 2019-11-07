@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 2.6)
 project(OpenGLPlay)
 
-set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD 17)
 
 option (GLFW_BUILD_EXAMPLES OFF)
 option (GLFW_BUILD_TESTS OFF)
@@ -18,6 +18,7 @@ file(GLOB_RECURSE HEADERS src/*.h)
 
 #add those files to a list
 source_group (TREE ${CMAKE_SOURCE_DIR}/src PREFIX "" FILES ${SOURCES} ${HEADERS})
+
 
 #define executable
 add_executable (OpenGLPlay ${SOURCES} ${HEADERS} glad/src/glad.c)

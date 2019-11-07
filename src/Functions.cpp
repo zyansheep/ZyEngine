@@ -1,13 +1,12 @@
-#include <iostream>
-#include <string>
-#include "glad/glad.h"
-#include <vector>
 #pragma once
 
-template<typename Type, size_t Size>
-struct Vertex {
-  Type data[Size];
-};
+#include <iostream>
+#include <string>
+#include <vector>
+#include "glad/glad.h"
+#include "Objects.cpp"
+
+
 
 static void printGlError(std::string str){
   std::cout << glGetError() << "-" << str << '\n';

@@ -47,7 +47,7 @@
       "scriptOnError": false,
       "notifyOnStart": false,
       "notifyOnSuccess": true,
-      "notifyOnError": true,
+      "notifyOnError": false,
       "input": null
     }
   ]

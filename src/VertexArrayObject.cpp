@@ -3,6 +3,7 @@
 
 #include "glad/glad.h"
 #include "Objects.cpp"
+#include "Shader.cpp"
 
 template<size_t NumVBOs>
 class VertexArrayObject {
@@ -20,6 +21,7 @@ public:
   void addVBO(std::vector<Vertex<VertexType, VertexDimensions>> attributes, 
   unsigned int attribIndex, 
   unsigned int typeDraw = GL_DYNAMIC_DRAW){
+    if(m_VertexCount == 0){m_VertexCount = attributes.size();}
     glBindVertexArray(m_VAO); //Make current attribute collection to use
     //C array of the data
     VertexType* attributes_array = &(attributes[0].data[0]); //C array of the vector object
@@ -54,6 +56,9 @@ public:
   void setShader(unsigned int &shader){
     m_Shader = &shader;
   }
+  void setShader(Shader &shader){
+    m_Shader = &shader.program;
+  }
   
   void draw(unsigned int drawMode = GL_TRIANGLES){
     glUseProgram(*m_Shader);
@@ -66,6 +71,6 @@ public:
   unsigned int *m_Shader;
 
 private:
-  unsigned int m_VertexCount = 3; //min indices: 3
+  unsigned int m_VertexCount = 0; //Set in addVBO function
   unsigned int m_NumVBOsAlloc = 0;
 };

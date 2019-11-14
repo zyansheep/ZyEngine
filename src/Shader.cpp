@@ -3,61 +3,67 @@
 #include <vector>
 
 #include "Functions.cpp"
+#pragma once
 
 class Shader {
 public:
-  Shader(const std::string& vertexShader, const std::string& fragmentShader)
-  : Shader(2, (unsigned int[]){GL_VERTEX_SHADER, GL_FRAGMENT_SHADER}, (std::string[]){vertexShader, fragmentShader}) {
+  Shader(){};
+  Shader(const std::string& vertexPath, const std::string& fragmentPath){
+    std::string VertexShaderSource = readFileSync(vertexPath);
+    std::string FragmentShaderSource = readFileSync(fragmentPath);
+    printf("Compiling shader : %s\n", vertexPath.c_str());
+    unsigned int VertexID;
+    CompileShader(VertexID, GL_VERTEX_SHADER, VertexShaderSource.c_str());
     
-  }
-  Shader(unsigned int count, unsigned int* typeArray, std::string* sourceArray){
-    program = glCreateProgram();
-    printGlError("glCreateProgram");
-    for(int i=0;i<count;i++){
-      unsigned int id = CompileShader(typeArray[i], sourceArray[i]);
-      if(id == 0){
-        std::cout << "[Shader] Compile Error for type:" << typeArray[i] << '\n';
-        return;
-      }
-      glAttachShader(program, id);
-      printGlError("AttachShader");
-    }
+    printf("Compiling shader : %s\n", fragmentPath.c_str());
+    unsigned int FragmentID;
+    CompileShader(FragmentID, GL_FRAGMENT_SHADER, FragmentShaderSource.c_str());
     
-    glLinkProgram(program);
-    printGlError("LinkProgram");
-    
-    glValidateProgram(program);
-    
-    printGlError("ValidateProgram");
+    printf("Linking program\n");
+    CompileProgram(program, {&VertexID, &FragmentID});
   }
   unsigned int program;
   
-  //const std::string& source MUST NOT BE DESTROYED!!!
-  static unsigned int CompileShader(unsigned int type, const std::string& source){
-    //Register a new OpenGL shader
-    unsigned int id = glCreateShader(type);
-    printGlError("glCreateShader");
-    const char* src = source.c_str();
-    
-    //source id, length of array, array of source ptrs, array of lengths of source ptrs.
-    glShaderSource(id, 1, &src, nullptr); //nullptr signifies source is null-terminated
-    printGlError("ShaderSource");
-    
-    //Error handling
-    int Result;
-    int InfoLogLength;
-    glGetShaderiv(id, GL_COMPILE_STATUS, &Result);
-    glGetShaderiv(id, GL_INFO_LOG_LENGTH, &InfoLogLength);
-    if ( InfoLogLength > 0 ){
-      std::cout << "Shader Compile Failed" << '\n';
-      std::vector<char> VertexShaderErrorMessage(InfoLogLength+1);
-      glGetShaderInfoLog(id, InfoLogLength, NULL, &VertexShaderErrorMessage[0]);
-      printf("%s\n", &VertexShaderErrorMessage[0]);
-      
-      return 0;
+  static void CompileProgram(unsigned int &ProgramID, std::vector<unsigned int*> shaders){
+    ProgramID = glCreateProgram();
+    for(int i=0;i<shaders.size();i++){
+      std::cout << *shaders[i] << '\n';
+      glAttachShader(ProgramID, *(shaders[i]));
     }
+  	
+  	glLinkProgram(ProgramID);
     
-    return id;
+    int Result = GL_FALSE;
+    int InfoLogLength;
+    
+  	// Check the program
+  	glGetProgramiv(ProgramID, GL_LINK_STATUS, &Result);
+  	glGetProgramiv(ProgramID, GL_INFO_LOG_LENGTH, &InfoLogLength);
+  	if ( InfoLogLength > 0 ){
+  		std::vector<char> ProgramErrorMessage(InfoLogLength+1);
+  		glGetProgramInfoLog(ProgramID, InfoLogLength, NULL, &ProgramErrorMessage[0]);
+  		printf("%s\n", &ProgramErrorMessage[0]);
+  	}
+  }
+  static void CompileShader(unsigned int &ShaderID, unsigned int type, const std::string& source){
+    ShaderID = glCreateShader(type);
+    
+    int Result = GL_FALSE;
+  	int InfoLogLength;
+
+  	// Compile Shader
+  	char const * sourcePointer = source.c_str();
+  	glShaderSource(ShaderID, 1, &sourcePointer , NULL);
+  	glCompileShader(ShaderID);
+
+  	// Check Vertex Shader
+  	glGetShaderiv(ShaderID, GL_COMPILE_STATUS, &Result);
+  	glGetShaderiv(ShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
+  	if ( InfoLogLength > 0 ){
+  		std::vector<char> ShaderErrorMessage(InfoLogLength+1);
+  		glGetShaderInfoLog(ShaderID, InfoLogLength, NULL, &ShaderErrorMessage[0]);
+  		printf("%s\n", &ShaderErrorMessage[0]);
+  	}
   }
   
   void use(){

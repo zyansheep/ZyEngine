@@ -7,10 +7,10 @@ option (GLFW_BUILD_EXAMPLES OFF)
 option (GLFW_BUILD_TESTS OFF)
 option (GLFW_BUILD_DOCS OFF)
 option (GLFW_INSTALL OFF)
-add_subdirectory(glfw)
+add_subdirectory(libs/glfw)
 
-include_directories(glfw/include)
-include_directories(glad/include)
+include_directories(libs/glfw/include)
+include_directories(libs/glad/include)
 
 #Recursively find all source files in src dir
 file(GLOB_RECURSE SOURCES src/*.cpp)
@@ -21,5 +21,5 @@ source_group (TREE ${CMAKE_SOURCE_DIR}/src PREFIX "" FILES ${SOURCES} ${HEADERS}
 
 
 #define executable
-add_executable (OpenGLPlay ${SOURCES} ${HEADERS} glad/src/glad.c)
+add_executable (OpenGLPlay ${SOURCES} ${HEADERS} libs/glad/src/glad.c)
 target_link_libraries (OpenGLPlay glfw)

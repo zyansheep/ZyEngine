@@ -41,10 +41,25 @@ public:
   bool isOpen;
   GLFWwindow* window;
   
+  double previousTime = glfwGetTime();
+  int frameCount = 0;
+  
   void start(void (*loop)()){
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
+      // Measure speed
+      double currentTime = glfwGetTime();
+      frameCount++;
+      // If a second has passed.
+      if ( currentTime - previousTime >= 1.0 ){
+          // Display the frame count here any way you want.
+          //displayFPS(frameCount);
+          //std::cout << "fps:"<<frameCount << '\n';
+          frameCount = 0;
+          previousTime = currentTime;
+      }
+
       /* Render here */
       loop();
       

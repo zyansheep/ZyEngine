@@ -27,7 +27,6 @@ public:
   static void CompileProgram(unsigned int &ProgramID, std::vector<unsigned int*> shaders){
     ProgramID = glCreateProgram();
     for(int i=0;i<shaders.size();i++){
-      std::cout << *shaders[i] << '\n';
       glAttachShader(ProgramID, *(shaders[i]));
     }
   	
@@ -69,4 +68,10 @@ public:
   void use(){
     glUseProgram(program);
   }
+  
+  unsigned int getUniformLocation(const char* uniform_handle){
+    glGetUniformLocation(program, uniform_handle);
+  }
+  
+  #include "UniformFunctions.cpp" //Import uniform functions
 };

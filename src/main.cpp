@@ -12,8 +12,10 @@
 //unsigned int shader;
 //unsigned int tri_vao;
 
-float Scale = 1.0f;
-unsigned int scale_uniform;
+float ScaleCount = 1.0f;
+Vertex<float, 2> transition = {0.0f, 0.0f};
+unsigned int main_uniform_scale;
+unsigned int main_uniform_transition;
 
 Window window = Window(600,600, "Neural Molecular Dynamics");
 VertexArrayObject<2> *triangle;
@@ -33,8 +35,6 @@ void setup(){
     {0.0f, 1.0f, 0.0f},
     {0.0f, 0.0f, 1.0f}
   });
-  scale_uniform = glGetUniformLocation(shader.program, "gScale");
-  std::cout << scale_uniform << '\n';
   triangle->setShader(shader);
   
   square = new VertexArrayObject<2>();
@@ -55,23 +55,28 @@ void setup(){
   //assert(scale_uniform != 0xFFFFFFFF);
   
   glClearColor(0.5,0.5,1.0,1.0);
+  
+  main_uniform_scale = shader.getUniformLocation("scale");
+  main_uniform_transition = shader.getUniformLocation("transition");
 }
 
 void loop(){
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   
-  Scale += 0.01f;
+  ScaleCount += 0.01f;
+  transition.data[1] = 3 * sinf(ScaleCount);
+  //std::cout << transition.data[1] << '\n';
   
-  glUniform1f(scale_uniform, sinf(Scale));
+  shader.Uniform(main_uniform_scale, 2 * sinf(ScaleCount));
+  shader.Uniform(main_uniform_transition, transition);
+  
   triangle->draw();
   square->draw();
 }
 
 int main(void){
-  
   printf("OpenGL version is (%s)\n", glGetString(GL_VERSION));
   printf("Supported GLSL version is %s.\n", (char *)glGetString(GL_SHADING_LANGUAGE_VERSION));
   setup();
   window.start(loop);
-  
 }

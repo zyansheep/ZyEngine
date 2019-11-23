@@ -3,15 +3,10 @@
 layout(location = 0) in vec3 vertex_position;
 layout(location = 1) in vec3 vertex_colour;
 
-uniform float scale;
-uniform vec2 translation;
+uniform mat4 MVPMatrix;
 out vec3 colour;
 
 void main() {
   colour = vertex_colour;
-  gl_Position = vec4(
-    scale * vertex_position.x + translation.x, 
-    vertex_position.y + translation.y, 
-    vertex_position.z, 
-    1.0);
+  gl_Position = MVPMatrix * vec4(vertex_position, 1);
 }

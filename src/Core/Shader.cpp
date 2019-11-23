@@ -1,6 +1,9 @@
 #include <iostream>
-#include <glad/glad.h>
+
 #include <vector>
+#include <glad/glad.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include "Functions.cpp"
 #pragma once
@@ -21,6 +24,8 @@ public:
     
     printf("Linking program\n");
     CompileProgram(program, {&VertexID, &FragmentID});
+    
+    getMVPMatrixLocation();
   }
   unsigned int program;
   
@@ -68,10 +73,65 @@ public:
   void use(){
     glUseProgram(program);
   }
-  
+  unsigned int MVPMatrixLocation;
+  unsigned int getMVPMatrixLocation(){
+    if(MVPMatrixLocation == 0){
+      MVPMatrixLocation = getUniformLocation("MVPMatrix");
+    }
+    return MVPMatrixLocation;
+  }
   unsigned int getUniformLocation(const char* uniform_handle){
-    glGetUniformLocation(program, uniform_handle);
+    return glGetUniformLocation(program, uniform_handle);
   }
   
-  #include "UniformFunctions.cpp" //Import uniform functions
+  //#include "UniformFunctions.cpp" //Import uniform functions
+  //Primitive
+  void Uniform(unsigned int location, float toSend){
+    glUniform1f(location, toSend);
+  }
+  void Uniform(unsigned int location, int toSend){
+    glUniform1i(location, toSend);
+  }
+  void Uniform(unsigned int location, unsigned int toSend){
+    glUniform1ui(location, toSend);
+  }
+
+  //Vectors length 2
+  void Uniform(unsigned int location, glm::vec<2, float> &toSend){
+    glUniform2fv(location, 1, glm::value_ptr(toSend));
+  }
+  void Uniform(unsigned int location, glm::vec<2, int> &toSend){
+    glUniform2iv(location, 1, glm::value_ptr(toSend));
+  }
+  void Uniform(unsigned int location, glm::vec<2, unsigned int> &toSend){
+    glUniform2uiv(location, 1, glm::value_ptr(toSend));
+  }
+
+  //Vectors length 3
+  void Uniform(unsigned int location, glm::vec<3, float> &toSend){
+    glUniform3fv(location, 1, glm::value_ptr(toSend));
+  }
+  void Uniform(unsigned int location, glm::vec<3, int> &toSend){
+    glUniform3iv(location, 1, glm::value_ptr(toSend));
+  }
+  void Uniform(unsigned int location, glm::vec<3, unsigned int> &toSend){
+    glUniform3uiv(location, 1, glm::value_ptr(toSend));
+  }
+
+  //Vectors length 4
+  void Uniform(unsigned int location, glm::vec<4, float> &toSend){
+    glUniform4fv(location, 1, glm::value_ptr(toSend));
+  }
+  void Uniform(unsigned int location, glm::vec<4, int> &toSend){
+    glUniform4iv(location, 1, glm::value_ptr(toSend));
+  }
+  void Uniform(unsigned int location, glm::vec<4, unsigned int> &toSend){
+    glUniform4uiv(location, 1, glm::value_ptr(toSend));
+  }
+
+  //Matrixes
+  void Uniform(unsigned int location, glm::mat4 &toSend){
+    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(toSend) );
+  }
+
 };

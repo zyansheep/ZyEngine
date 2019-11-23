@@ -3,12 +3,10 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "glad/glad.h"
-#include "Objects.cpp"
-#include <iostream>
 #include <fstream>
-#include <string>
 #include <sstream>
+
+#include "glad/glad.h"
 
 static void printGlError(std::string str){
   std::cout << glGetError() << "-" << str << '\n';

@@ -15,7 +15,7 @@ public:
   }
   void render(){
     for(Object* obj : m_objects){
-      obj->render(m_camera->matrix);
+      obj->render(m_camera);
     }
   }
   void draw(){

@@ -4,6 +4,8 @@
 
 #include "Window.cpp"
 
+#pragma once
+
 class Camera {
 public:
   Camera(float fov, Window* window, glm::vec3 position){
@@ -24,7 +26,7 @@ public:
     matrix = m_projection * m_view;
   }
   glm::mat4 matrix;
-private:
+//private:
   glm::mat4 m_projection;
   glm::mat4 m_view;
   

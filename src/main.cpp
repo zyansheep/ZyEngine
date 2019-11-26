@@ -13,75 +13,51 @@
 //unsigned int main_uniform_scale;
 //unsigned int main_uniform_transition;
 
-Window window = Window(600,600, "Neural Molecular Dynamics");
+Window window = Window(600,600, "Graphics Engine Testing");
 Camera camera = Camera(45.0f, &window, glm::vec3(4,3,3));
 World world = World(&window, &camera);
 
 Object triangle;
-//VertexArrayObject<2> *square;
 Shader shader;
 void setup(){
   //Triangle vertex positions
   shader = Shader("../src/shaders/main.vert", "../src/shaders/main.frag");
-  triangle = Object(new VertexArrayObject(std::vector<VertexBufferObject>{
-    VertexBufferObject(std::vector<glm::vec3>{ //positions
-      {-0.5f, -0.5f, 0.0f},
-      { 0.0f,  0.5f, 0.0f},
-      { 0.5f, -0.5f, 0.0f}
-    }),
-    VertexBufferObject(std::vector<glm::vec3>{ //colors
-      { 1.0f,  0.0f, 0.0f},
-      { 0.0f,  1.0f, 0.0f},
-      { 0.0f,  0.0f, 1.0f}
-    })
-  }), &shader);
-  world.addObject(&triangle);
-  //triangle.setShader(shader);
   
-  /*triangle->addVBO(std::vector<Vertex<float, 2>>{
+  
+  /*VertexBuffer trianglePositions = VertexBuffer({
+    {-0.5f, -0.5f, 0.0f},
+    { 0.0f,  0.5f, 0.0f},
+    { 0.5f, -0.5f, 0.0f}
+  });
+  VertexBuffer triangleColors = VertexBuffer({
+    { 1.0f,  0.0f, 0.0f},
+    { 0.0f,  1.0f, 0.0f},
+    { 0.0f,  0.0f, 1.0f}
+  });
+  VertexArray* triangleVAO = new VertexArray({
+    &trianglePositions,
+    &triangleColors
+  });*/
+  VertexArray* triangleVAO = new VertexArray();
+  triangleVAO->addVBO(std::vector<Vertex<float, 2>>{
     {-0.5f, -0.5f},
     {0.0f, 0.5f},
     {0.5f, -0.5f}
   });
-  triangle->addVBO(std::vector<Vertex<float,3>>{
+  triangleVAO->addVBO(std::vector<Vertex<float,3>>{
     {1.0f, 0.0f, 0.0f},
     {0.0f, 1.0f, 0.0f},
     {0.0f, 0.0f, 1.0f}
-  });*/
-  
-  
-  /*square = new VertexArrayObject<2>();
-  square->addVBO(std::vector<Vertex<float, 2>>{
-    {0.9f, 0.9f},
-    {0.9f, 0.7f},
-    {0.7f, 0.7f},
-    {0.7f, 0.9f}
   });
-  square->addVBO(std::vector<Vertex<float,3>>{
-    {1.0f, 0.0f, 0.0f},
-    {0.0f, 1.0f, 0.0f},
-    {0.0f, 0.0f, 1.0f},
-    {1.0f, 0.0f, 1.0f}
-  });
-  square->setShader(shader);*/
-  
-  //assert(scale_uniform != 0xFFFFFFFF);
+  triangle = Object(triangleVAO, &shader);
+  world.addObject(&triangle);
   
   glClearColor(0.5,0.5,1.0,1.0);
-  
-  //main_uniform_scale = shader.getUniformLocation("scale");
-  //main_uniform_transition = shader.getUniformLocation("transition");
 }
 
 void loop(){
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   
-  //ScaleCount += 0.01f;
-  //transition.data[1] = 3 * sinf(ScaleCount);
-  //std::cout << transition.data[1] << '\n';
-  
-  //shader.Uniform(main_uniform_scale, 2 * sinf(ScaleCount));
-  //shader.Uniform(main_uniform_transition, transition);
   world.render();
   world.draw();
   //square->draw();

@@ -71,13 +71,6 @@ public:
   void use(){
     glUseProgram(program);
   }
-  int MVPMatrixLocation;
-  int getMVPMatrixLocation(){
-    if(MVPMatrixLocation == 0){
-      MVPMatrixLocation = getUniformLocation("MVPMatrix");
-    }
-    return MVPMatrixLocation;
-  }
   int getUniformLocation(const char* uniform_handle){
     return glGetUniformLocation(program, uniform_handle);
   }

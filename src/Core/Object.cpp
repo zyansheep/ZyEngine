@@ -13,7 +13,7 @@ public:
   Object(){};
   Object(VertexArray* vao, Shader* shader)
   : m_vao(vao), m_shader(shader){
-    MVPLocation = shader->getMVPMatrixLocation();
+    MVPLocation = shader->getUniformLocation("MVPMatrix");
   }
   void render(Camera* viewport){
     MVPMatrix = viewport->m_projection * viewport->m_view * modelMatrix;

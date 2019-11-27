@@ -23,31 +23,17 @@ void setup(){
   //Triangle vertex positions
   shader = Shader("../src/shaders/main.vert", "../src/shaders/main.frag");
   
-  
-  /*VertexBuffer trianglePositions = VertexBuffer({
-    {-0.5f, -0.5f, 0.0f},
-    { 0.0f,  0.5f, 0.0f},
-    { 0.5f, -0.5f, 0.0f}
-  });
-  VertexBuffer triangleColors = VertexBuffer({
-    { 1.0f,  0.0f, 0.0f},
-    { 0.0f,  1.0f, 0.0f},
-    { 0.0f,  0.0f, 1.0f}
-  });
   VertexArray* triangleVAO = new VertexArray({
-    &trianglePositions,
-    &triangleColors
-  });*/
-  VertexArray* triangleVAO = new VertexArray();
-  triangleVAO->addVBO(std::vector<Vertex<float, 2>>{
-    {-0.5f, -0.5f},
-    {0.0f, 0.5f},
-    {0.5f, -0.5f}
-  });
-  triangleVAO->addVBO(std::vector<Vertex<float,3>>{
-    {1.0f, 0.0f, 0.0f},
-    {0.0f, 1.0f, 0.0f},
-    {0.0f, 0.0f, 1.0f}
+    new VertexBuffer({
+      {-0.5f, -0.5f, 0.0f},
+      { 0.0f,  0.5f, 0.0f},
+      { 0.5f, -0.5f, 0.0f}
+    }),
+    new VertexBuffer({
+      { 1.0f,  0.0f, 0.0f},
+      { 0.0f,  1.0f, 0.0f},
+      { 0.0f,  0.0f, 1.0f}
+    }),
   });
   triangle = Object(triangleVAO, &shader);
   world.addObject(&triangle);

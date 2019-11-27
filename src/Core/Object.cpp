@@ -16,7 +16,7 @@ public:
     MVPLocation = shader->getUniformLocation("MVPMatrix");
   }
   void render(Camera* viewport){
-    MVPMatrix = viewport->m_projection * viewport->m_view * modelMatrix;
+    MVPMatrix = viewport->matrix * modelMatrix;
   }
   void draw(){
     m_shader->use();

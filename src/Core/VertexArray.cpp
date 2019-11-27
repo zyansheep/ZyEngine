@@ -2,78 +2,59 @@
 #include <vector>
 
 #include "glad/glad.h"
+#include "glm/glm.hpp"
+#include "glm/gtc/type_ptr.hpp"
+
 //#include "Objects.cpp"
 #include "Shader.cpp"
-template<typename Type, size_t Dimensions>
-struct Vertex{
-  Type data[Dimensions];
+
+class VertexBuffer {
+public:
+  VertexBuffer(std::vector<glm::vec3> vertices, unsigned int typeDraw = GL_DYNAMIC_DRAW){
+    size = vertices.size();
+    glGenBuffers(1, &address);
+    Bind();
+    glBufferData(
+      GL_ARRAY_BUFFER, 
+      size * sizeof(glm::vec3), 
+      value_ptr(vertices[0]), 
+      typeDraw); //Put information into buffer
+  }
+  void Bind(unsigned int type = GL_ARRAY_BUFFER){
+    glBindBuffer(type, address);
+  }
+  unsigned int size;
+  unsigned int address;
 };
 
 class VertexArray {
 public:
-  VertexArray(){
-    glGenVertexArrays(1, &m_VAO);
+  VertexArray(std::vector<VertexBuffer*> buffers){
+    glGenVertexArrays(1, &address);
+    glBindVertexArray(address);
+    m_VertexCount = buffers[0]->size;
+    for(unsigned int index = 0;index < buffers.size(); index++){
+      buffers[index]->Bind();
+      
+      glVertexAttribPointer(
+        index, //Id of buffer to give data about
+        3, //Size of each vertex (how many dimensions)
+        GL_FLOAT, //Type of vertex data (needs to be gl constant)
+        GL_FALSE,
+        0, //stride (for interpolation of data)
+        NULL); //Other specifications
+      
+      glEnableVertexAttribArray(index);
+    }
   }
-  
-  template<typename VertexType, size_t VertexDimensions>
-  void addVBO(std::vector<Vertex<VertexType, VertexDimensions>> attributes){
-    addVBO(attributes, m_NumVBOsAlloc);
-  }
-    
-  template<typename VertexType, size_t VertexDimensions>
-  void addVBO(std::vector<Vertex<VertexType, VertexDimensions>> attributes, 
-  unsigned int attribIndex, 
-  unsigned int typeDraw = GL_DYNAMIC_DRAW){
-    if(m_VertexCount == 0){m_VertexCount = attributes.size();}
-    glBindVertexArray(m_VAO); //Make current attribute collection to use
-    //C array of the data
-    VertexType* attributes_array = &(attributes[0].data[0]); //C array of the vector object
-    
-    glGenBuffers(1, &m_VBOs[attribIndex]); //gen new buffer
-    glBindBuffer(GL_ARRAY_BUFFER, m_VBOs[attribIndex]); //designate current buffer
-    glBufferData(
-      GL_ARRAY_BUFFER, 
-      attributes.size() * sizeof(Vertex<VertexType, VertexDimensions>), 
-      attributes_array, 
-      typeDraw); //Put information into buffer
-    
-    //T type;
-    glVertexAttribPointer(
-      attribIndex, //Id of buffer to give data about
-      VertexDimensions, //Size of each vertex (how many dimensions)
-      GL_FLOAT, //Type of vertex data (needs to be gl constant)
-      GL_FALSE,
-      0, //stride (for interpolation of data)
-      NULL); //Other specifications
-    
-    glEnableVertexAttribArray(attribIndex);
-    
-    m_NumVBOsAlloc++;
-  }
-  
-  template<typename VertexType, size_t VertexDimensions>
-  void modifyVBO(unsigned int attribIndex, 
-  std::vector<Vertex<VertexType, VertexDimensions>> attributes){
-    
-  }
-  /*void setShader(unsigned int &shader){
-    m_Shader = &shader;
-  }
-  void setShader(Shader &shader){
-    m_Shader = &shader.program;
-  }*/
   
   void draw(unsigned int drawMode = GL_TRIANGLES){
     //glUseProgram(*m_Shader);
-    glBindVertexArray(m_VAO);
+    glBindVertexArray(address);
     glDrawArrays(drawMode, 0, m_VertexCount);
   }
   
-  unsigned int m_VAO;
-  unsigned int m_VBOs[3];
-  //unsigned int *m_Shader;
-
+  unsigned int address;
 private:
   unsigned int m_VertexCount = 0; //Set in addVBO function
-  unsigned int m_NumVBOsAlloc = 0;
 };

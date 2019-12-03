@@ -34,7 +34,7 @@ private:
   std::vector<Buffer*> m_VertexBuffers;
   unsigned int m_VertexCount;
   
-  Buffer* m_IndexBuffer;
+  Buffer* m_IndexBuffer = NULL;
   unsigned int m_IndexCount;
   
   unsigned int m_Address;

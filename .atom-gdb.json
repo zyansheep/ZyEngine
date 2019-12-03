@@ -1,0 +1,11 @@
+client:
+	debugger: 'dbg-gdb'
+	cwd: 'client'
+	path: 'client/bin'
+	args: ['--connect', '1234']
+
+server:
+	debugger: 'dbg-gdb'
+	cwd: 'server'
+	path: 'server/bin'
+	args: ['--port', '1234']

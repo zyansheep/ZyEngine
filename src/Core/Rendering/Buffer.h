@@ -28,7 +28,7 @@ public:
     unsigned int GetTypeBuffer() const { return m_TypeBuffer; }
 private:
     std::vector<BufferElement> m_Elements;
-    unsigned int m_Stride;
+    unsigned int m_Stride = 0;
     unsigned int m_TypeDraw = GL_STATIC_DRAW;
     unsigned int m_TypeBuffer = GL_ARRAY_BUFFER;
 };

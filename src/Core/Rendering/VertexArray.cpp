@@ -4,9 +4,11 @@ void VertexArray::Bind(){
   glBindVertexArray(m_Address);
 }
 void VertexArray::AddVertexBuffer(Buffer* buffer){
-  m_VertexCount = buffer->GetLayout().GetStride();
+  
   
   const std::vector<BufferElement>& elements = buffer->GetLayout().GetElements();
+  const BufferElement& element0 = elements[0];
+  m_VertexCount = buffer->GetSize() / elements[0].Size;
   for (uint32_t index = 0; index < elements.size(); index++){
       glEnableVertexAttribArray(index);
       glVertexAttribPointer(

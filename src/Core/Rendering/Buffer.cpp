@@ -1,15 +1,15 @@
 #include "Buffer.h"
 
 BufferLayout::BufferLayout(std::initializer_list<BufferElement> elements)
-: m_Elements(elements)
-{
+: m_Elements(elements){
     size_t offset = 0;
-    for (BufferElement& element : m_Elements)
-    {
+    for (BufferElement& element : m_Elements){
         element.Offset = offset;
         offset += element.Size;
     }
-    m_Stride = offset;
+    if(elements.size() > 1){
+      m_Stride = offset;
+    }
 }
 
 void Buffer::Bind(){

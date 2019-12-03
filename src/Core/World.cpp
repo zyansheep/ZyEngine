@@ -1,7 +1,6 @@
-#include "Shader.cpp"
-#include "Object.cpp"
+#include "Object.h"
 #include "Window.cpp"
-#include "Camera.cpp"
+#include "Camera.h"
 
 class World {
 public:

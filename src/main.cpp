@@ -18,12 +18,15 @@ Camera camera = Camera(45.0f, &window, glm::vec3(4,3,3));
 World world = World(&window, &camera);
 
 Object triangle;
+Object cube;
 Shader shader;
+
+#include "cube.cpp"
 void setup(){
   //Triangle vertex positions
   shader = Shader("../src/shaders/main.vert", "../src/shaders/main.frag");
   
-  VertexArray* triangleVAO = new VertexArray({
+  /*VertexArray* triangleVAO = new VertexArray({
     new VertexBuffer({
       {-0.5f, -0.5f, 0.0f},
       { 0.0f,  0.5f, 0.0f},
@@ -34,9 +37,17 @@ void setup(){
       { 0.0f,  1.0f, 0.0f},
       { 0.0f,  0.0f, 1.0f}
     }),
-  });
-  triangle = Object(triangleVAO, &shader);
-  world.addObject(&triangle);
+  });*/
+  //triangle = Object(triangleVAO, &shader);
+  //world.addObject(&triangle);
+  
+  Buffer cube_positions = Buffer({{ShaderType::Float3, "a_position"}});
+  cube_positions.SetData((float*)cube_vertices_, sizeof(cube_vertices_));
+  Buffer cube_colors = Buffer({{ShaderType::Float3, "a_color"}});
+  cube_positions.SetData((float*)cube_colors_, sizeof(cube_colors_));
+  
+  cube = Object(new VertexArray({&cube_positions, &cube_colors}), &shader);
+  world.addObject(&cube);
   
   glClearColor(0.5,0.5,1.0,1.0);
 }

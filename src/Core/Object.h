@@ -4,24 +4,26 @@
 #include "glm/gtx/string_cast.hpp"
 #include "glad/glad.h"
 
-#include "VertexArray.cpp"
-#include "Shader.cpp"
-#include "Camera.cpp"
+#include "Rendering/VertexArray.h"
+#include "Rendering/Shader.cpp"
+#include "Camera.h"
+
+#pragma once
 
 class Object {
 public:
   Object(){};
   Object(VertexArray* vao, Shader* shader)
   : m_vao(vao), m_shader(shader){
-    MVPLocation = shader->getUniformLocation("MVPMatrix");
+    MVPLocation = shader->GetUniformLocation("MVPMatrix");
   }
   void render(Camera* viewport){
     MVPMatrix = viewport->matrix * modelMatrix;
   }
   void draw(){
-    m_shader->use();
+    m_shader->Bind();
     m_shader->Uniform(MVPLocation, MVPMatrix);
-    m_vao->draw();
+    m_vao->Draw();
   }
   int MVPLocation;
   glm::mat4 MVPMatrix;

@@ -69,7 +69,7 @@ public:
   void MouseScrollCallback(double xoffset, double yoffset){
     
   }
-  //Callbacks
+  //Global Callbacks
   static void GlobalWindowResizeCallback(GLFWwindow* window, int w, int h){
     Window::getHandler(window)->WindowResizeCallback(w, h);
   }

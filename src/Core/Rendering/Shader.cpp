@@ -5,7 +5,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "Functions.cpp"
+#include "../Functions.h"
 #pragma once
 
 class Shader {
@@ -68,10 +68,10 @@ public:
   	}
   }
   
-  void use(){
+  void Bind(){
     glUseProgram(program);
   }
-  int getUniformLocation(const char* uniform_handle){
+  int GetUniformLocation(const char* uniform_handle){
     return glGetUniformLocation(program, uniform_handle);
   }
   

@@ -47,5 +47,5 @@ public:
 private:
   BufferLayout m_Layout;
   unsigned int m_Address;
-  unsigned int m_RawSize;
+  unsigned int m_RawSize = 0;
 };

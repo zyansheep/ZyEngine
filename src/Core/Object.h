@@ -30,6 +30,6 @@ public:
   
   glm::mat4 modelMatrix = glm::mat4(1.0f);
   
-  Shader* m_shader;
   VertexArray* m_vao;
+  Shader* m_shader;
 };

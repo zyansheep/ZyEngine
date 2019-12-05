@@ -16,6 +16,7 @@ void Buffer::Bind(){
   glBindBuffer(m_Layout.GetTypeBuffer(), m_Address);
 }
 void Buffer::SetData(void* data, size_t size){
+  m_RawSize = size;
   Bind();
   //Put information into buffer
   glBufferData(

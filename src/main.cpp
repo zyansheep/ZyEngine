@@ -24,7 +24,7 @@ Shader shader;
 #include "cube.cpp"
 void setup(){
   //Triangle vertex positions
-  shader = Shader("../src/shaders/main.vert", "../src/shaders/main.frag");
+  shader = Shader("../../src/shaders/main.vert", "../../src/shaders/main.frag");
   
   /*VertexArray* triangleVAO = new VertexArray({
     new VertexBuffer({
@@ -41,12 +41,12 @@ void setup(){
   //triangle = Object(triangleVAO, &shader);
   //world.addObject(&triangle);
   
-  Buffer cube_positions = Buffer({{ShaderType::Float3, "a_position"}});
-  cube_positions.SetData((float*)cube_vertices_, sizeof(cube_vertices_));
-  Buffer cube_colors = Buffer({{ShaderType::Float3, "a_color"}});
-  cube_positions.SetData((float*)cube_colors_, sizeof(cube_colors_));
+  Buffer* cube_positions = new Buffer({{ShaderType::Float3, "a_position"}});
+  cube_positions->SetData((float*)cube_vertices_, sizeof(cube_vertices_));
+  Buffer* cube_colors = new Buffer({{ShaderType::Float3, "a_color"}});
+  cube_colors->SetData((float*)cube_colors_, sizeof(cube_colors_));
   
-  cube = Object(new VertexArray({&cube_positions, &cube_colors}), &shader);
+  cube = Object(new VertexArray({cube_positions, cube_colors}), &shader);
   world.addObject(&cube);
   
   glClearColor(0.5,0.5,1.0,1.0);

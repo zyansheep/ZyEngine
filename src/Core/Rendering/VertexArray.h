@@ -38,4 +38,6 @@ private:
   unsigned int m_IndexCount;
   
   unsigned int m_Address;
+  
+  unsigned int m_AttribIndex = 0;
 };

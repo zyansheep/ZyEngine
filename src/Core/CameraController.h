@@ -46,15 +46,21 @@ public:
       0,
       cos(m_horizontalAngle - 3.14f/2.0f)
     );
+    glm::vec3 forward = glm::vec3(
+      sin(m_horizontalAngle),
+      0,
+      cos(m_horizontalAngle)
+    );
     glm::vec3 up = glm::cross( right, m_camera->Direction );
+    
     // Move directions
     // Move Forward
     if (glfwGetKey( m_window->GetNative(), GLFW_KEY_W ) == GLFW_PRESS){
-      m_camera->Position += m_camera->Direction * deltaTime * m_speed;
+      m_camera->Position += forward * deltaTime * m_speed;
     }
     // Move backward
     if (glfwGetKey( m_window->GetNative(), GLFW_KEY_S ) == GLFW_PRESS){
-      m_camera->Position -= m_camera->Direction * deltaTime * m_speed;
+      m_camera->Position -= forward * deltaTime * m_speed;
     }
     // Strafe right
     if (glfwGetKey( m_window->GetNative(), GLFW_KEY_D ) == GLFW_PRESS){
@@ -63,6 +69,14 @@ public:
     // Strafe left
     if (glfwGetKey( m_window->GetNative(), GLFW_KEY_A ) == GLFW_PRESS){
       m_camera->Position -= right * deltaTime * m_speed;
+    }
+    // Go Up
+    if (glfwGetKey( m_window->GetNative(), GLFW_KEY_SPACE ) == GLFW_PRESS){
+      m_camera->Position += m_camera->UpVec * deltaTime * m_speed;
+    }
+    // Go Down
+    if (glfwGetKey( m_window->GetNative(), GLFW_KEY_LEFT_SHIFT ) == GLFW_PRESS){
+      m_camera->Position -= m_camera->UpVec * deltaTime * m_speed;
     }
     
     m_camera->Properties.AspectRatio = (float)m_window->GetWidth() / (float)m_window->GetHeight();
@@ -77,5 +91,5 @@ private:
   float m_horizontalAngle = 3.14f; // horizontal angle : toward -Z
   float m_verticalAngle = 0.0f; // vertical angle : 0, look at the horizon
   float m_speed = 10.0f; // 3 units / second
-  float m_mouseSpeed = 0.01f;
+  float m_mouseSpeed = 0.05f;
 };

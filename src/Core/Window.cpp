@@ -45,6 +45,11 @@ public:
     
     m_isOpen = true;
   }
+  GLFWwindow* GetNative(){
+    return m_window;
+  }
+  
+  
   static Window* getHandler(GLFWwindow* window){
     return (Window*)(glfwGetWindowUserPointer(window));
   }
@@ -94,7 +99,7 @@ private:
   int m_width;
   int m_height;
   std::string m_title;
-  
+public:
   double previousTime;
   double currentTime;
   double frameTime = 0;
@@ -131,24 +136,27 @@ public:
     glfwSwapInterval((int)val);
   }
   
-  int getWidth(){
+  int GetWidth(){
     return m_width;
   }
-  void setWidth(){
+  void SetWidth(){
     
   }
   
-  int getHeight(){
+  int GetHeight(){
     return m_height;
   }
-  void setHeight(){
+  void SetHeight(){
     
   }
   
-  void getTitle(){
+  void GetTitle(){
     
   }
-  void setTitle(){
+  void SetTitle(){
     
+  }
+  double GetFrameTime(){
+    return frameTime;
   }
 };

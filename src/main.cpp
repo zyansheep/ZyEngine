@@ -4,6 +4,7 @@
 #include <math.h>
 
 #include "Core/World.cpp"
+#include "Core/CameraController.h"
 
 //unsigned int shader;
 //unsigned int tri_vao;
@@ -14,7 +15,8 @@
 //unsigned int main_uniform_transition;
 
 Window window = Window(600,600, "Graphics Engine Testing");
-Camera camera = Camera(45.0f, &window, glm::vec3(4,3,3));
+Camera camera = Camera(glm::vec3{4,4,3});
+CameraController controller = CameraController(&camera, &window);
 World world = World(&window, &camera);
 
 Object triangle;
@@ -23,23 +25,9 @@ Shader shader;
 
 #include "cube.cpp"
 void setup(){
+  //controller.Bind(&camera);
   //Triangle vertex positions
-  shader = Shader("../../src/shaders/main.vert", "../../src/shaders/main.frag");
-  
-  /*VertexArray* triangleVAO = new VertexArray({
-    new VertexBuffer({
-      {-0.5f, -0.5f, 0.0f},
-      { 0.0f,  0.5f, 0.0f},
-      { 0.5f, -0.5f, 0.0f}
-    }),
-    new VertexBuffer({
-      { 1.0f,  0.0f, 0.0f},
-      { 0.0f,  1.0f, 0.0f},
-      { 0.0f,  0.0f, 1.0f}
-    }),
-  });*/
-  //triangle = Object(triangleVAO, &shader);
-  //world.addObject(&triangle);
+  shader = Shader("../src/shaders/main.vert", "../src/shaders/main.frag");
   
   Buffer* cube_positions = new Buffer({{ShaderType::Float3, "a_position"}});
   cube_positions->SetData((float*)cube_vertices_, sizeof(cube_vertices_));
@@ -49,15 +37,18 @@ void setup(){
   cube = Object(new VertexArray({cube_positions, cube_colors}), &shader);
   world.addObject(&cube);
   
+  glEnable(GL_DEPTH_TEST);
+  glDepthFunc(GL_LESS);
   glClearColor(0.5,0.5,1.0,1.0);
+  
+  world.render();
 }
 
 void loop(){
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  
+  controller.Update();
   world.render();
   world.draw();
-  //square->draw();
 }
 
 int main(void){

@@ -13,23 +13,24 @@
 class Object {
 public:
   Object(){};
-  Object(VertexArray* vao, Shader* shader)
-  : m_vao(vao), m_shader(shader){
-    MVPLocation = shader->GetUniformLocation("MVPMatrix");
+  Object(VertexArray* vertexArray, Shader* shader, std::string MVPString = "MVPMatrix")
+  : m_VertexArray(vertexArray), m_Shader(shader){
+    m_MVPLocation = shader->GetUniformLocation(MVPString.c_str());
   }
   void render(Camera* viewport){
-    MVPMatrix = viewport->matrix * modelMatrix;
+    m_MVPMatrix = viewport->matrix * m_ModelMatrix;
   }
   void draw(){
-    m_shader->Bind();
-    m_shader->Uniform(MVPLocation, MVPMatrix);
-    m_vao->Draw();
+    m_Shader->Bind();
+    m_Shader->Uniform(m_MVPLocation, m_MVPMatrix);
+    m_VertexArray->Draw();
   }
-  int MVPLocation;
-  glm::mat4 MVPMatrix;
   
-  glm::mat4 modelMatrix = glm::mat4(1.0f);
+private:
+  int m_MVPLocation;
+  glm::mat4 m_MVPMatrix;
+  glm::mat4 m_ModelMatrix = glm::mat4(1.0f);
   
-  VertexArray* m_vao;
-  Shader* m_shader;
+  VertexArray* m_VertexArray;
+  Shader* m_Shader;
 };

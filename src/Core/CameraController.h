@@ -21,7 +21,7 @@ public:
     }
   }
   void Unbind(){
-    
+    m_camera = NULL;
   }
   void Update(){
     if(m_camera == NULL){return;}

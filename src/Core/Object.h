@@ -2,6 +2,7 @@
 #include "glm/glm.hpp"
 #include "glm/ext.hpp"
 #include "glm/gtx/string_cast.hpp"
+#include "glm/gtc/quaternion.hpp"
 #include "glad/glad.h"
 
 #include "Rendering/VertexArray.h"
@@ -17,10 +18,11 @@ public:
   : m_VertexArray(vertexArray), m_Shader(shader){
     m_MVPLocation = shader->GetUniformLocation(MVPString.c_str());
   }
-  void render(Camera* viewport){
+  void Render(Camera* viewport){
     m_MVPMatrix = viewport->matrix * m_ModelMatrix;
+    m_ModelMatrix = glm::rotate(m_ModelMatrix, glm::radians(90.0f/60), glm::vec3(0.0f, 0.0f, 1.0f));
   }
-  void draw(){
+  void Draw(){
     m_Shader->Bind();
     m_Shader->Uniform(m_MVPLocation, m_MVPMatrix);
     m_VertexArray->Draw();

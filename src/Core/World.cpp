@@ -14,12 +14,12 @@ public:
   }
   void render(){
     for(Object* obj : m_objects){
-      obj->render(m_camera);
+      obj->Render(m_camera);
     }
   }
   void draw(){
     for(Object* obj : m_objects){
-      obj->draw();
+      obj->Draw();
     }
   }
   

@@ -15,8 +15,8 @@
 //unsigned int main_uniform_transition;
 
 Window window = Window(600,600, "Graphics Engine Testing");
-Camera camera = Camera(glm::vec3{4,4,3});
-CameraController controller = CameraController(&camera, &window);
+Camera camera = Camera(glm::vec3{0, 0, 8});
+CameraController controller = CameraController(&window);
 World world = World(&window, &camera);
 
 Object triangle;
@@ -42,6 +42,7 @@ void setup(){
   glClearColor(0.5,0.5,1.0,1.0);
   
   world.render();
+  controller.Bind(&camera);
 }
 
 void loop(){

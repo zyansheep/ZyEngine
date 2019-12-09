@@ -44,6 +44,7 @@ public:
     glfwSetScrollCallback(m_window, GlobalMouseScrollCallback);
     
     m_isOpen = true;
+    previousTime = glfwGetTime();
   }
   GLFWwindow* GetNative(){
     return m_window;
@@ -100,8 +101,8 @@ private:
   int m_height;
   std::string m_title;
 public:
-  double previousTime;
-  double currentTime;
+  double previousTime = 0;
+  double currentTime = 0;
   double frameTime = 0;
 public:
   void start(void (*loop)()){

@@ -7,9 +7,8 @@
 
 class CameraController {
 public:
-  CameraController(Camera* camera, Window* window)
+  CameraController(Window* window)
   :m_window(window){
-    Bind(camera);
   }
   void Bind(Camera* camera){
     if (true){//(glfwRawMouseMotionSupported()){
@@ -25,15 +24,17 @@ public:
   }
   void Update(){
     if(m_camera == NULL){return;}
+    
     //double currentTime = glfwGetTime();
     //deltaTime = float(currentTime - m_lastTime);
     float deltaTime = m_window->GetFrameTime();
     double xpos, ypos;
     
     glfwGetCursorPos(m_window->GetNative(), &xpos, &ypos);
-    
     glfwSetCursorPos(m_window->GetNative(), m_window->GetWidth()/2, m_window->GetHeight()/2);
-    m_horizontalAngle += m_mouseSpeed * deltaTime * float(m_window->GetWidth()/2 - xpos );
+    
+    if(bindDelay > 0){bindDelay--; return;}
+    m_horizontalAngle += m_mouseSpeed * deltaTime * float( m_window->GetWidth()/2 - xpos );
     m_verticalAngle   += m_mouseSpeed * deltaTime * float( m_window->GetHeight()/2 - ypos );
     
     m_camera->Direction = glm::vec3(
@@ -83,8 +84,12 @@ public:
     
     //Update camera matricies
     m_camera->Update();
+    
+    //std::cout << glm::to_string(m_camera->Position)<<" --- " << m_horizontalAngle<<", "<<m_verticalAngle<<"\t\r"<<std::flush;
   }
 private:
+  unsigned int bindDelay = 2;
+  
   Camera* m_camera;
   Window* m_window;
   

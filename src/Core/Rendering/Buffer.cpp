@@ -25,3 +25,13 @@ void Buffer::SetData(void* data, size_t size){
     data, 
     m_Layout.GetTypeDraw());
 }
+/*void Buffer::SetData(std::vector<Unknown> data){
+  m_RawSize = data.size() * sizeof(Unknown);
+  Bind();
+  //Put information into buffer
+  glBufferData(
+    m_Layout.GetTypeBuffer(), 
+    m_RawSize, 
+    data, 
+    m_Layout.GetTypeDraw());
+}*/

@@ -26,6 +26,7 @@ void VertexArray::AddVertexBuffer(Buffer* buffer){
 void VertexArray::SetIndexBuffer(Buffer* buffer){
   m_IndexBuffer = buffer;
   m_IndexCount = m_IndexBuffer->GetSize() / sizeof(unsigned int);
+  std::cout << "IndexCount: "<<m_IndexCount << '\n';
 }
 void VertexArray::Draw(unsigned int drawMode){
   glBindVertexArray(m_Address);

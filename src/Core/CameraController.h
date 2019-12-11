@@ -5,6 +5,8 @@
 //#include "m_window.cpp"
 //#include "Camera.h"
 
+#define PI 3.14159264
+
 class CameraController {
 public:
   CameraController(Window* window)
@@ -20,7 +22,11 @@ public:
     }
   }
   void Unbind(){
+    glfwSetInputMode(m_window->GetNative(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     m_camera = NULL;
+    m_horizontalAngle = 3.14f;
+    m_verticalAngle = 0.0f;
+    bindDelay = 2;
   }
   void Update(){
     if(m_camera == NULL){return;}
@@ -36,6 +42,8 @@ public:
     if(bindDelay > 0){bindDelay--; return;}
     m_horizontalAngle += m_mouseSpeed * deltaTime * float( m_window->GetWidth()/2 - xpos );
     m_verticalAngle   += m_mouseSpeed * deltaTime * float( m_window->GetHeight()/2 - ypos );
+    if(m_verticalAngle > PI/2){m_verticalAngle = PI/2 - 0.00001;}
+    if(m_verticalAngle < -(PI/2)){m_verticalAngle = -PI/2 + 0.00001;}
     
     m_camera->Direction = glm::vec3(
       cos(m_verticalAngle) * sin(m_horizontalAngle),

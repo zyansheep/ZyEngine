@@ -19,37 +19,73 @@ Camera camera = Camera(glm::vec3{0, 0, 8});
 CameraController controller = CameraController(&window);
 World world = World(&window, &camera);
 
-Object triangle;
-Object cube;
+Object* plane;
+Object* cube;
+Object* cube2;
 Shader shader;
 
 #include "cube.cpp"
 void setup(){
   //controller.Bind(&camera);
   //Triangle vertex positions
-  shader = Shader("../src/shaders/main.vert", "../src/shaders/main.frag");
+  shader = Shader("../../src/shaders/main.vert","../../src/shaders/main.frag");
+  //shader = Shader("../src/shaders/main.vert", "../src/shaders/main.frag");
   
   Buffer* cube_positions = new Buffer({{ShaderType::Float3, "a_position"}});
   cube_positions->SetData((float*)cube_vertices_, sizeof(cube_vertices_));
   Buffer* cube_colors = new Buffer({{ShaderType::Float3, "a_color"}});
   cube_colors->SetData((float*)cube_colors_, sizeof(cube_colors_));
+  cube = new Object(new VertexArray({cube_positions, cube_colors}), shader);
+  cube2 = new Object(new VertexArray({cube_positions, cube_colors}), shader);
+  cube->Translate(glm::vec3(0, 5, 0));
   
-  cube = Object(new VertexArray({cube_positions, cube_colors}), &shader);
-  world.addObject(&cube);
+  Buffer* plane_attrib_buffer = new Buffer({
+    {ShaderType::Float3, "a_position"},
+    {ShaderType::Float3, "a_color"}
+  });
+  float plane_attrib_array[] = {
+    0,  0,  0,  255,  0,  0,
+    0,  0,100,    0,255,  0,
+    0,100,100,    0,  0,255,
+    0,100,  0,  255,  0,255
+  };
+  plane_attrib_buffer->SetData(plane_attrib_array, sizeof(plane_attrib_array));
+  
+  Buffer* plane_index_buffer = new Buffer();
+  uint plane_index_array[] {
+    0,1,2,
+    0,2,3
+  };
+  plane_index_buffer->SetData(plane_index_array, sizeof(plane_index_array));
+  
+  plane = new Object(new VertexArray({plane_attrib_buffer}, plane_index_buffer), shader);
+  
+  world.AddObject(cube);
+  world.AddObject(cube2);
+  world.AddObject(plane);
   
   glEnable(GL_DEPTH_TEST);
   glDepthFunc(GL_LESS);
   glClearColor(0.5,0.5,1.0,1.0);
   
-  world.render();
+  //world.render();
   controller.Bind(&camera);
 }
 
 void loop(){
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   controller.Update();
-  world.render();
-  world.draw();
+  
+  if(window.GetKey(GLFW_KEY_R)){
+    controller.Unbind();
+    camera = Camera(glm::vec3{0, 0, 8});
+    controller.Bind(&camera);
+  }
+  
+  cube->Rotate(90.0f/60, glm::vec3(0.0f, 0.0f, 1.0f));
+  
+  world.Render();
+  world.Draw();
 }
 
 int main(void){

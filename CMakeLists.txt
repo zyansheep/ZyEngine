@@ -28,3 +28,5 @@ source_group (TREE ${CMAKE_SOURCE_DIR}/src PREFIX "" FILES ${SOURCES} ${HEADERS}
 #define executable
 add_executable (OpenGLPlay ${SOURCES} ${HEADERS} libs/glad/src/glad.c)
 target_link_libraries (OpenGLPlay glfw)
+
+

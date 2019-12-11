@@ -9,15 +9,15 @@ public:
   }
   World(Window* window, Camera* camera)
   :m_window(window), m_camera(camera){};
-  void addObject(Object* object){
+  void AddObject(Object* object){
     m_objects.push_back(object);
   }
-  void render(){
+  void Render(){
     for(Object* obj : m_objects){
       obj->Render(m_camera);
     }
   }
-  void draw(){
+  void Draw(){
     for(Object* obj : m_objects){
       obj->Draw();
     }

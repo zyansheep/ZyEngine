@@ -136,7 +136,9 @@ public:
   void setVerticalSync(bool val){
     glfwSwapInterval((int)val);
   }
-  
+  bool GetKey(int key){
+    return glfwGetKey(m_window, key);
+  }
   int GetWidth(){
     return m_width;
   }

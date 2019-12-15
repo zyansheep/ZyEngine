@@ -64,6 +64,8 @@ void setup(){
   plane_index_buffer->SetData(plane_index_array, sizeof(plane_index_array));
   
   plane = new Object(new VertexArray({plane_attrib_buffer}, plane_index_buffer), shader);
+  plane->Rotate(90.0f, glm::vec3(0,0,1));
+  plane->Translate({-8,-50,-50});
   
   world.AddObject(cube);
   world.AddObject(cube2);
@@ -92,7 +94,7 @@ void loop(){
     camera = Camera(&window, glm::vec3{0, 0, 8});
     controller.Bind(&camera);
   }
-  if(window.GetKey(GLFW_KEY_U)){
+  if(window.GetKey(GLFW_KEY_ESCAPE)){
     controller.Unbind();
   }
   if(window.GetKey(GLFW_KEY_B)){

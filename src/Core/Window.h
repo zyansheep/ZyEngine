@@ -25,6 +25,7 @@ private:
   static void GlobalMouseMoveCallback(GLFWwindow* window, double xpos, double ypos);
   static void GlobalMouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
   static void GlobalMouseScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
+  static void GlobalErrorCallback(int id, const char* error);
   
   bool m_IsOpen;
   GLFWwindow* m_Window;

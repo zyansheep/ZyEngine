@@ -31,6 +31,7 @@ void VertexArray::SetIndexBuffer(Buffer* buffer){
 void VertexArray::Draw(unsigned int drawMode){
   glBindVertexArray(m_Address);
   if(m_IndexBuffer != NULL){
+    m_IndexBuffer->Bind();
     glDrawElements(drawMode, m_IndexCount, GL_UNSIGNED_INT, NULL);
   }else{
     glDrawArrays(drawMode, 0, m_VertexCount);

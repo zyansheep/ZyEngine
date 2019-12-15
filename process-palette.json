@@ -10,14 +10,14 @@
   },
   "commands": [
     {
-      "namespace": "OpenGLPlay",
+      "namespace": "Build",
       "action": "Run",
       "command": "./build/OpenGLPlay",
       "arguments": [],
       "cwd": "{fileProjectPath}",
       "inputDialogs": [],
       "env": {},
-      "keystroke": "cmd-e",
+      "keystroke": "ctrl-e",
       "stream": true,
       "outputTarget": "panel",
       "outputBufferSize": 80000,

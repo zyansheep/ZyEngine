@@ -3,6 +3,7 @@
 Window::Window(int width, int height, std::string title, bool vsync)
 : m_Width(width), m_Height(height), m_Title(title){
   /* Initialize the library */
+  glfwSetErrorCallback(&GlobalErrorCallback);
   if (!glfwInit()){
     std::cout << "Could not initialize GLFW" << std::endl;
     exit(-1);
@@ -10,11 +11,12 @@ Window::Window(int width, int height, std::string title, bool vsync)
   
   /* Create a windowed mode window and its OpenGL context */
   //Enable opengl 3.3 core
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-  
+  #ifdef MACOS
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+  #endif
   m_Window = glfwCreateWindow(m_Width, m_Height, m_Title.c_str(), NULL, NULL);
   if (!m_Window){
     glfwTerminate();
@@ -105,4 +107,7 @@ void Window::GlobalMouseButtonCallback(GLFWwindow* window, int button, int actio
 }
 void Window::GlobalMouseScrollCallback(GLFWwindow* window, double xoffset, double yoffset){
   Window::GetHandler(window)->MouseScrollCallback(xoffset, yoffset);
+}
+void Window::GlobalErrorCallback(int id, const char* error){
+  std::cout << "Error: glfw: " << id << ":" << error << std::endl;
 }

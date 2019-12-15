@@ -2,7 +2,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 
-#include "Window.cpp"
+#include "Window.h"
 
 #pragma once
 
@@ -13,6 +13,12 @@ struct CameraProperties {
   float FarField = 100.0f;
   
   CameraProperties(){};
+  CameraProperties(float aspectRatio)
+  :AspectRatio(aspectRatio){}
+  
+  CameraProperties(Window* window)
+  :AspectRatio((float)window->GetWidth() / (float)window->GetHeight()){}
+  
   CameraProperties(float fov, Window* window)
   :FieldOfView(fov),
   AspectRatio((float)window->GetWidth() / (float)window->GetHeight()){}
@@ -20,10 +26,8 @@ struct CameraProperties {
 
 class Camera {
 public:
-  float m_horizontalAngle = 3.14f; // horizontal angle : toward -Z
-  float m_verticalAngle = 0.0f; // vertical angle : 0, look at the horizon
-  Camera(glm::vec3 position, glm::vec3 direction = glm::vec3(0, 0, -1), glm::vec3 upvec = glm::vec3(0,1,0))
-  :Camera(CameraProperties(), position, direction, upvec){}
+  Camera(Window* window, glm::vec3 position, glm::vec3 direction = glm::vec3(0, 0, -1), glm::vec3 upvec = glm::vec3(0,1,0))
+  :Camera(CameraProperties(window), position, direction, upvec){}
   Camera(CameraProperties properties, glm::vec3 position, glm::vec3 direction = glm::vec3(0, 0, -1), glm::vec3 upvec = glm::vec3(0,1,0))
   :Properties(properties), Position(position), Direction(direction), UpVec(upvec){
     Update();

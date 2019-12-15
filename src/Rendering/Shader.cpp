@@ -5,7 +5,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "../Functions.h"
+#include "Core/Functions.h"
 #pragma once
 
 class Shader {

@@ -1,165 +1,108 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <iostream>
-#include <string>
+#include "Window.h"
 
-#pragma once
-
-class Window{
-public:
-  Window(int width, int height, std::string title, bool vsync = true)
-  :m_width(width), m_height(height), m_title(title){
-    /* Initialize the library */
-    if (!glfwInit()){
-      std::cout << "Could not initialize GLFW" << std::endl;
-      exit(-1);
-    }
-    
-    /* Create a windowed mode window and its OpenGL context */
-    //Enable opengl 3.3 core
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    
-    m_window = glfwCreateWindow(m_width, m_height, m_title.c_str(), NULL, NULL);
-    if (!m_window)
-    {
-      glfwTerminate();
-      
-      std::cout << "Error could not create window: \"" + title + "\" Exiting..." << std::endl;
-      exit(-1);
-    }
-    glfwSetWindowUserPointer(m_window, (void *)(this));
-    
-    glfwMakeContextCurrent(m_window);
-    gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
-    glfwSwapInterval(1);
-    
-    glfwSetWindowSizeCallback(m_window, GlobalWindowResizeCallback);
-    glfwSetKeyCallback(m_window, GlobalKeyButtonCallback);
-    glfwSetCursorPosCallback(m_window, GlobalMouseMoveCallback);
-    glfwSetCursorEnterCallback(m_window, GlobalMouseEnterCallback);
-    glfwSetMouseButtonCallback(m_window, GlobalMouseButtonCallback);
-    glfwSetScrollCallback(m_window, GlobalMouseScrollCallback);
-    
-    m_isOpen = true;
-    previousTime = glfwGetTime();
-  }
-  GLFWwindow* GetNative(){
-    return m_window;
+Window::Window(int width, int height, std::string title, bool vsync)
+: m_Width(width), m_Height(height), m_Title(title){
+  /* Initialize the library */
+  if (!glfwInit()){
+    std::cout << "Could not initialize GLFW" << std::endl;
+    exit(-1);
   }
   
+  /* Create a windowed mode window and its OpenGL context */
+  //Enable opengl 3.3 core
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   
-  static Window* getHandler(GLFWwindow* window){
-    return (Window*)(glfwGetWindowUserPointer(window));
-  }
-  
-  //Callbacks
-  void WindowResizeCallback(int w, int h){
-    m_width = w;
-    m_height = h;
-  }
-  void KeyButtonCallback(int key, int scancode, int action, int mods){
-    
-  }
-  void MouseEnterCallback(int entered){
-    
-  }
-  void MouseMoveCallback(double xpos, double ypos){
-    
-  }
-  void MouseButtonCallback(int button, int action, int mods){
-    
-  }
-  void MouseScrollCallback(double xoffset, double yoffset){
-    
-  }
-  //Global Callbacks
-  static void GlobalWindowResizeCallback(GLFWwindow* window, int w, int h){
-    Window::getHandler(window)->WindowResizeCallback(w, h);
-  }
-  static void GlobalKeyButtonCallback(GLFWwindow* window, int key, int scancode, int action, int mods){
-    Window::getHandler(window)->KeyButtonCallback(key, scancode, action, mods);
-  }
-  static void GlobalMouseEnterCallback(GLFWwindow* window, int entered){
-    Window::getHandler(window)->MouseEnterCallback(entered);
-  }
-  static void GlobalMouseMoveCallback(GLFWwindow* window, double xpos, double ypos){
-    Window::getHandler(window)->MouseMoveCallback(xpos, ypos);
-  }
-  static void GlobalMouseButtonCallback(GLFWwindow* window, int button, int action, int mods){
-    Window::getHandler(window)->MouseButtonCallback(button, action, mods);
-  }
-  static void GlobalMouseScrollCallback(GLFWwindow* window, double xoffset, double yoffset){
-    Window::getHandler(window)->MouseScrollCallback(xoffset, yoffset);
-  }
-private:
-  bool m_isOpen;
-  GLFWwindow* m_window;
-  int m_width;
-  int m_height;
-  std::string m_title;
-public:
-  double previousTime = 0;
-  double currentTime = 0;
-  double frameTime = 0;
-public:
-  void start(void (*loop)()){
-    /* Loop until the user closes the window */
-    previousTime = glfwGetTime();
-    currentTime = previousTime;
-    while (!glfwWindowShouldClose(m_window))
-    {
-      // Measure speed
-      currentTime = glfwGetTime();
-      frameTime = currentTime - previousTime;
-      previousTime = currentTime;
-
-      /* Render here */
-      loop();
-      
-      /* Swap front and back buffers */
-      glfwSwapBuffers(m_window);
-      
-      /* Poll for and process events */
-      glfwPollEvents();
-      
-      //Close if escape key hit
-      if(glfwGetKey(m_window, GLFW_KEY_ESCAPE))
-        glfwSetWindowShouldClose(m_window, 1);
-    }
-    
+  m_Window = glfwCreateWindow(m_Width, m_Height, m_Title.c_str(), NULL, NULL);
+  if (!m_Window){
     glfwTerminate();
+    
+    std::cout << "Error could not create window: \"" + title + "\" Exiting..." << std::endl;
+    exit(-1);
   }
+  glfwSetWindowUserPointer(m_Window, (void *)(this));
   
-  void setVerticalSync(bool val){
-    glfwSwapInterval((int)val);
-  }
-  bool GetKey(int key){
-    return glfwGetKey(m_window, key);
-  }
-  int GetWidth(){
-    return m_width;
-  }
-  void SetWidth(){
-    
-  }
+  glfwMakeContextCurrent(m_Window);
+  gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
+  glfwSwapInterval(1);
   
-  int GetHeight(){
-    return m_height;
-  }
-  void SetHeight(){
-    
-  }
+  glfwSetWindowSizeCallback(m_Window, GlobalWindowResizeCallback);
   
-  void GetTitle(){
+  glfwSetKeyCallback(m_Window, GlobalKeyButtonCallback);
+  
+  glfwSetCursorPosCallback(m_Window, GlobalMouseMoveCallback);
+  glfwSetCursorEnterCallback(m_Window, GlobalMouseEnterCallback);
+  glfwSetMouseButtonCallback(m_Window, GlobalMouseButtonCallback);
+  glfwSetScrollCallback(m_Window, GlobalMouseScrollCallback);
+  
+  m_IsOpen = true;
+}
+
+void Window::Start(void (*loop)()){
+  while (!glfwWindowShouldClose(m_Window)) {
+    // Measure speed
+    RunTime = glfwGetTime();
+    FrameTime = RunTime - m_PreviousFrameTime;
+    m_PreviousFrameTime = RunTime;
+
+    /* Render here */
+    loop();
     
-  }
-  void SetTitle(){
+    /* Swap front and back buffers */
+    glfwSwapBuffers(m_Window);
     
+    /* Poll for and process events */
+    glfwPollEvents();
   }
-  double GetFrameTime(){
-    return frameTime;
-  }
-};
+
+  glfwTerminate();
+}
+GLFWwindow* Window::GetNative(){
+  return m_Window;
+}
+Window* Window::GetHandler(GLFWwindow* window){
+  return (Window*)(glfwGetWindowUserPointer(window));
+}
+
+//Callbacks
+void Window::WindowResizeCallback(int w, int h){
+  m_Width = w;
+  m_Height = h;
+}
+void Window::KeyButtonCallback(int key, int scancode, int action, int mods){
+  
+}
+void Window::MouseEnterCallback(int entered){
+  
+}
+void Window::MouseMoveCallback(double xpos, double ypos){
+  MouseX = xpos;
+  MouseY = ypos;
+}
+void Window::MouseButtonCallback(int button, int action, int mods){
+  
+}
+void Window::MouseScrollCallback(double xoffset, double yoffset){
+  
+}
+//Global Callbacks
+void Window::GlobalWindowResizeCallback(GLFWwindow* window, int w, int h){
+  Window::GetHandler(window)->WindowResizeCallback(w, h);
+}
+void Window::GlobalKeyButtonCallback(GLFWwindow* window, int key, int scancode, int action, int mods){
+  Window::GetHandler(window)->KeyButtonCallback(key, scancode, action, mods);
+}
+void Window::GlobalMouseEnterCallback(GLFWwindow* window, int entered){
+  Window::GetHandler(window)->MouseEnterCallback(entered);
+}
+void Window::GlobalMouseMoveCallback(GLFWwindow* window, double xpos, double ypos){
+  Window::GetHandler(window)->MouseMoveCallback(xpos, ypos);
+}
+void Window::GlobalMouseButtonCallback(GLFWwindow* window, int button, int action, int mods){
+  Window::GetHandler(window)->MouseButtonCallback(button, action, mods);
+}
+void Window::GlobalMouseScrollCallback(GLFWwindow* window, double xoffset, double yoffset){
+  Window::GetHandler(window)->MouseScrollCallback(xoffset, yoffset);
+}

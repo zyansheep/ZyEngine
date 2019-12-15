@@ -1,4 +1,5 @@
 #include "Window.h"
+#include "Preprocessor.h"
 
 Window::Window(int width, int height, std::string title, bool vsync)
 : m_Width(width), m_Height(height), m_Title(title){
@@ -11,7 +12,7 @@ Window::Window(int width, int height, std::string title, bool vsync)
   
   /* Create a windowed mode window and its OpenGL context */
   //Enable opengl 3.3 core
-  #ifdef MACOS
+  #ifdef ZY_OSX
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);

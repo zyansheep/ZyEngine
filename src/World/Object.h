@@ -32,6 +32,10 @@ public:
   void Translate(glm::vec3 v){
     m_ModelMatrix = glm::translate(m_ModelMatrix, v);
   }
+  
+  VertexArray* GetVertexArray(){
+    return m_VertexArray;
+  }
 private:
   int m_MVPLocation;
   glm::mat4 m_MVPMatrix;

@@ -7,6 +7,8 @@
 #include "World/CameraController.h"
 #include "Core/Gui.h"
 
+#include <glm/gtx/color_space.hpp>
+
 //unsigned int shader;
 //unsigned int tri_vao;
 
@@ -93,7 +95,15 @@ void loop(){
   if(window.GetKey(GLFW_KEY_B)){
     controller.Bind(&camera);
   }
+  
   cube->Rotate(90.0f/60, glm::vec3(0.0f, 0.0f, 1.0f));
+  auto dacolor = glm::rgbColor(glm::vec3{window.RunTime*10, 1,1});
+  for (int v = 0; v < 12*3 ; v++){
+    cube_colors_[3*v+0] = dacolor.r;
+    cube_colors_[3*v+1] = dacolor.g;
+    cube_colors_[3*v+2] = dacolor.b;
+  }
+  cube->GetVertexArray()->GetVertexBuffers()[1]->SetData(cube_colors_, sizeof(cube_colors_));
   
   world.Render();
   world.Draw();

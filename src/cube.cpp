@@ -1,4 +1,4 @@
-static const float cube_vertices_[] = {
+static float cube_vertices_[] = {
     -1.0f,-1.0f,-1.0f, // triangle 1 : begin
     -1.0f,-1.0f, 1.0f,
     -1.0f, 1.0f, 1.0f, // triangle 1 : end
@@ -36,7 +36,7 @@ static const float cube_vertices_[] = {
     -1.0f, 1.0f, 1.0f,
     1.0f,-1.0f, 1.0f
 };
-static const float cube_colors_[] = {
+static float cube_colors_[] = {
     0.583f,  0.771f,  0.014f,
     0.609f,  0.115f,  0.436f,
     0.327f,  0.483f,  0.844f,

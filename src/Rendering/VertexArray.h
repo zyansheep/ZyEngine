@@ -30,6 +30,10 @@ public:
   void SetIndexBuffer(Buffer* buffer);
   
   void Draw(unsigned int drawMode = GL_TRIANGLES);
+  
+  std::vector<Buffer*>& GetVertexBuffers(){
+    return m_VertexBuffers;
+  }
 private:
   std::vector<Buffer*> m_VertexBuffers;
   unsigned int m_VertexCount;

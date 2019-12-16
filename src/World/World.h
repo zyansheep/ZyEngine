@@ -1,5 +1,5 @@
 #include "Object.h"
-#include "Window.h"
+#include "Core/Window.h"
 #include "Camera.h"
 
 class World {

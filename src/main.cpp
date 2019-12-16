@@ -3,11 +3,9 @@
 #include <array>
 #include <math.h>
 
-#include "Core/World.h"
-#include "Core/CameraController.h"
-#include "imgui.h"
-#include "examples/imgui_impl_glfw.h"
-#include "examples/imgui_impl_opengl3.h"
+#include "World/World.h"
+#include "World/CameraController.h"
+#include "Core/Gui.h"
 
 //unsigned int shader;
 //unsigned int tri_vao;
@@ -18,6 +16,8 @@
 //unsigned int main_uniform_transition;
 
 Window window = Window(1280,720, "Graphics Engine Testing");
+
+Gui gui = Gui(window);
 Camera camera = Camera(&window, glm::vec3{0, 0, 8});
 CameraController controller = CameraController(&window);
 World world = World(&window, &camera);
@@ -74,14 +74,7 @@ void setup(){
   glEnable(GL_DEPTH_TEST);
   glDepthFunc(GL_LESS);
   
-  IMGUI_CHECKVERSION();
-  ImGui::CreateContext();
-  ImGuiIO &io = ImGui::GetIO();
-  // Setup Platform/Renderer bindings
-  ImGui_ImplGlfw_InitForOpenGL(window.GetNative(), true);
-  ImGui_ImplOpenGL3_Init("#version 330");
-  // Setup Dear ImGui style
-  ImGui::StyleColorsDark();
+  gui.Init();
 }
 
 void loop(){
@@ -105,22 +98,16 @@ void loop(){
   world.Render();
   world.Draw();
   
-  ImGui_ImplOpenGL3_NewFrame();
-  ImGui_ImplGlfw_NewFrame();
-  ImGui::NewFrame();
-  // render your GUI
-  ImGui::Begin("Hello There");
+  gui.Begin("Hello There~");
     ImGui::Button("This is a button");
     ImGuiColorEditFlags misc_flags = (0) | (ImGuiColorEditFlags_NoDragDrop) | (ImGuiColorEditFlags_AlphaPreviewHalf) | (ImGuiColorEditFlags_NoOptions);
     ImGui::ColorPicker4("##picker", (float*)&clearColor, misc_flags | ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoSmallPreview);
     ImGui::Text("FrameTime: %f seconds", window.GetFrameTime());
     ImGui::Text("Mouse Position: (%d, %d)", window.MouseX, window.MouseY);
     ImGui::Text("Current Time: %f", window.RunTime);
-  ImGui::End();
-
-  // Render dear imgui into screen
-  ImGui::Render();
-  ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+  gui.End();
+  gui.Render();
+  gui.Draw();
 }
 
 int main(void){

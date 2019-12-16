@@ -45,7 +45,4 @@ libs/imgui/examples/imgui_impl_glfw.cpp)
 add_executable (OpenGLPlay ${SOURCES} ${HEADERS} libs/glad/src/glad.c ${IMGUI_SRC})
 target_link_libraries (OpenGLPlay glfw)
 
-execute_process(COMMAND "./build/OpenGLPlay"
-WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-
 

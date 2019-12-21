@@ -6,6 +6,7 @@
 #include "World/World.h"
 #include "World/CameraController.h"
 #include "Core/Gui.h"
+#include "Model/Model.h"
 
 #include <glm/gtx/color_space.hpp>
 
@@ -27,9 +28,14 @@ World world = World(&window, &camera);
 Object* plane;
 Object* cube;
 Object* cube2;
+Object* sphere;
 Shader shader;
 
+Model cubeModel = ModelGenerator::Cube();
+Model sphereModel = ModelGenerator::Icosphere(0);
+
 ImVec4 clearColor = ImVec4(0.5,0.5,1.0,1.0);
+glm::vec4 color = glm::vec4(1.0,1.0,1.0,1.0);
 
 #include "cube.cpp"
 void setup(){
@@ -43,8 +49,15 @@ void setup(){
   Buffer* cube_colors = new Buffer({{ShaderType::Float3, "a_color"}});
   cube_colors->SetData((float*)cube_colors_, sizeof(cube_colors_));
   cube = new Object(new VertexArray({cube_positions, cube_colors}), shader);
-  cube2 = new Object(new VertexArray({cube_positions, cube_colors}), shader);
-  cube->Translate(glm::vec3(0, 5, 0));
+  //cube2 = new Object(new VertexArray({cube_positions, cube_colors}), shader);
+  
+  cubeModel.Load();
+  cube2 = new Object(cubeModel.GetVertexArray(), shader);
+  cube2->Translate(glm::vec3(0, 5, 0));
+  
+  sphereModel.Load();
+  sphere = new Object(sphereModel.GetVertexArray(), shader);
+  sphere->Translate(glm::vec3(5, 0, 0));
   
   Buffer* plane_attrib_buffer = new Buffer({
     {ShaderType::Float3, "a_position"},
@@ -72,6 +85,7 @@ void setup(){
   world.AddObject(cube);
   world.AddObject(cube2);
   world.AddObject(plane);
+  world.AddObject(sphere);
   
   glEnable(GL_DEPTH_TEST);
   glDepthFunc(GL_LESS);
@@ -97,7 +111,7 @@ void loop(){
   }
   
   cube->Rotate(90.0f/60, glm::vec3(0.0f, 0.0f, 1.0f));
-  auto dacolor = glm::rgbColor(glm::vec3{window.RunTime*10, 1,1});
+  auto dacolor = glm::rgbColor(glm::vec3{fmod(window.RunTime*10, 1), 1,1});
   for (int v = 0; v < 12*3 ; v++){
     cube_colors_[3*v+0] = dacolor.r;
     cube_colors_[3*v+1] = dacolor.g;

@@ -45,6 +45,9 @@ public:
   :m_Layout(layout){
     glGenBuffers(1, &m_Address);
   }
+  ~Buffer(){
+    glDeleteBuffers(1, &m_Address);
+  }
   void Bind();
   void SetData(void* data, size_t size);
   //template<typename Unknown>

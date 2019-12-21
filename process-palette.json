@@ -17,7 +17,7 @@
       "cwd": "{fileProjectPath}",
       "inputDialogs": [],
       "env": {},
-      "keystroke": "ctrl-e",
+      "keystroke": "cmd-e",
       "stream": true,
       "outputTarget": "panel",
       "outputBufferSize": 80000,

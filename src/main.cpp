@@ -31,8 +31,8 @@ Object* cube2;
 Object* sphere;
 Shader shader;
 
-Model cubeModel = ModelGenerator::Cube();
-Model sphereModel = ModelGenerator::Icosphere(0);
+Model cubeModel = ModelGeneration::Cube();
+Model sphereModel = ModelGeneration::Icosphere(4);
 
 ImVec4 clearColor = ImVec4(0.5,0.5,1.0,1.0);
 glm::vec4 color = glm::vec4(1.0,1.0,1.0,1.0);

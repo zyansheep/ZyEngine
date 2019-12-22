@@ -13,7 +13,7 @@
 
 class Object {
 public:
-  Object(VertexArray* vertexArray, Shader& shader, std::string MVPString = "MVPMatrix")
+  Object(VertexArray* vertexArray, Shader& shader, std::string MVPString = "u_transform")
   : m_VertexArray(vertexArray), m_Shader(shader){
     m_MVPLocation = shader.GetUniformLocation(MVPString.c_str());
   }
@@ -36,7 +36,7 @@ public:
   VertexArray* GetVertexArray(){
     return m_VertexArray;
   }
-private:
+protected:
   int m_MVPLocation;
   glm::mat4 m_MVPMatrix;
   glm::mat4 m_ModelMatrix = glm::mat4(1.0f);
@@ -44,3 +44,5 @@ private:
   VertexArray* m_VertexArray;
   Shader& m_Shader;
 };
+
+#include "ObjectArray.h"

@@ -1,3 +1,5 @@
+#ifdef IcoSphere
+
 public class IcoSphereCreator{
   private struct TriangleIndices{
     public int v1;
@@ -137,3 +139,5 @@ public class IcoSphereCreator{
     return this.geometry;        
   }
 }
+
+#endif

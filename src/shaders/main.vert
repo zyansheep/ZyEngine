@@ -3,10 +3,10 @@
 layout(location = 0) in vec3 a_position;
 layout(location = 1) in vec3 a_color;
 
-uniform mat4 MVPMatrix;
+uniform mat4 u_transform;
 out vec3 u_color;
 
 void main() {
-  u_color = a_color;
-  gl_Position = MVPMatrix * vec4(a_position, 1);
+  u_color = sin(a_position);
+  gl_Position = u_transform * vec4(a_position, 1);
 }

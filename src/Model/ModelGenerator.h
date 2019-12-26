@@ -1,9 +1,8 @@
 #include <map>
-
 namespace ModelGeneration {
   static Model Icosphere(uint recursionLevel){
-    float t = (1.0 + sqrt(5.0)) / 10.0;
-    float s = (1.0 - sqrt(5.0)) / 10.0;
+    const static float t = (1.0 + sqrt(5.0)) / 10.0;
+    const static float s = (1.0 - sqrt(5.0)) / 10.0;
     Model model = Model({
       {-s,  t,  0},
       { s,  t,  0},
@@ -45,7 +44,7 @@ namespace ModelGeneration {
       {9,8,1}
     });
     
-    //mapping vert indexs of line where midpoint is generated to midpooint index
+    //mapping vert indexs of line where midpoint is generated to midpoint index
     //used to check if midpoint index was allready generated
     std::map<std::pair<uint, uint>, uint> midpointLookup;
     auto getMidpointIndex = [&] (uint indexA, uint indexB) {

@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/ocornut/imgui
+	branch = master
+	commit = dc66f83db8462e7837aec60fef86c025ac4c485b
+	parent = a34f93d634f2c1c12f4f55634ad4aa79fc6d3588
+	method = merge
+	cmdver = 0.4.0

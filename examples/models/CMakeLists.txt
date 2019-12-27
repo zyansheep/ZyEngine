@@ -1,0 +1,2 @@
+add_executable(ExampleModels main.cpp)
+target_link_libraries(ExampleModels ZyEngine)

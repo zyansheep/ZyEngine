@@ -1,0 +1,2 @@
+add_executable(ExampleTemplate main.cpp)
+target_link_libraries(ExampleTemplate ZyEngine)

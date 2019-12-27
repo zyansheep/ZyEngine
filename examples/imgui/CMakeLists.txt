@@ -1,0 +1,2 @@
+add_executable(ExampleImGui main.cpp)
+target_link_libraries(ExampleImGui ZyEngine)

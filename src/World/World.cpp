@@ -1,7 +1,7 @@
 #include "World.h"
 
 World::World(Window* window, Camera* camera, std::vector<Object*> objects)
- : m_Window(window), m_Camera(camera) , m_Objects(objects){
+  :m_Window(window), m_Camera(camera) , m_Objects(objects){
 }
 World::World(Window* window, Camera* camera)
 :m_Window(window), m_Camera(camera){};

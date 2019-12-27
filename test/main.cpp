@@ -33,8 +33,7 @@ glm::vec4 color = glm::vec4(1.0,1.0,1.0,1.0);
 void setup(){
   //controller.Bind(&camera);
   //Triangle vertex positions
-  //shader = Shader("../../src/shaders/main.vert","../../src/shaders/main.frag");
-  shader = Shader("src/shaders/main.vert", "src/shaders/main.frag");
+  shader = Shader("test/shaders/main.vert", "test/shaders/main.frag");
   
   Buffer* cube_positions = new Buffer({{ShaderType::Float3, "a_position"}});
   cube_positions->SetData((float*)cube_vertices_, sizeof(cube_vertices_));

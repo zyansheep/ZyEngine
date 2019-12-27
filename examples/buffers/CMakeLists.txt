@@ -1,0 +1,2 @@
+add_executable(ExampleBuffers main.cpp attributes.cpp)
+target_link_libraries(ExampleBuffers ZyEngine)

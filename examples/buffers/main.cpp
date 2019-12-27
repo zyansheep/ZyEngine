@@ -1,6 +1,5 @@
 #include "World/World.h"
-
-#include "attributes.cpp"
+#include "World/CameraController.h"
 
 Window window = Window(1280,720, "Examples - Cube");
 
@@ -9,14 +8,25 @@ CameraController controller = CameraController(&window);
 World world = World(&window, &camera);
 
 Object* cube;
+Shader shader;
 
 void loop(){
+  glClearColor(255,255,255,255);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  
+  controller.Update();
+  
   world.Render();
   world.Draw();
+  
+  glEnable(GL_DEPTH_TEST);
+  glDepthFunc(GL_LESS);
 }
 
-void main(){
-  controller.Bind(&camera);
+#include "attributes.cpp"
+
+int main(){
+  shader = Shader("test/shaders/main.vert", "test/shaders/main.frag");
   
   Buffer* cube_positions = new Buffer({{ShaderType::Float3, "a_position"}});
   cube_positions->SetData((float*)cube_vertices_, sizeof(cube_vertices_));
@@ -25,5 +35,7 @@ void main(){
   cube = new Object(new VertexArray({cube_positions, cube_colors}), shader);
   
   world.AddObject(cube);
+  
+  controller.Bind(&camera);
   window.Start(loop);
 }

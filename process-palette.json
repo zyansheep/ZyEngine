@@ -12,7 +12,7 @@
     {
       "namespace": "Build",
       "action": "Run",
-      "command": "./build/OpenGLPlay",
+      "command": "./build/Test",
       "arguments": [],
       "cwd": "{fileProjectPath}",
       "inputDialogs": [],

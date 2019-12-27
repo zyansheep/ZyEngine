@@ -41,8 +41,12 @@ libs/imgui/imgui_widgets.cpp
 libs/imgui/examples/imgui_impl_opengl3.cpp
 libs/imgui/examples/imgui_impl_glfw.cpp)
 
-#define executable
-add_executable (OpenGLPlay ${SOURCES} ${HEADERS} libs/glad/src/glad.c ${IMGUI_SRC})
-target_link_libraries (OpenGLPlay glfw)
+add_library(ZyEngine STATIC ${SOURCES} ${HEADERS} libs/glad/src/glad.c ${IMGUI_SRC})
+target_link_libraries(ZyEngine glfw)
 
+#Find Sources and Headers in src folder
+file(GLOB_RECURSE TEST_SOURCES test/*.cpp)
+file(GLOB_RECURSE TEST_HEADERS test/*.h)
 
+add_executable(Test ${TEST_SOURCES} ${TEST_HEADERS})
+target_link_libraries(Test ZyEngine)

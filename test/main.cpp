@@ -10,14 +10,6 @@
 
 #include <glm/gtx/color_space.hpp>
 
-//unsigned int shader;
-//unsigned int tri_vao;
-
-//float ScaleCount = 1.0f;
-//Vertex<float, 2> transition = {0.0f, 0.0f};
-//unsigned int main_uniform_scale;
-//unsigned int main_uniform_transition;
-
 Window window = Window(1280,720, "Graphics Engine Testing");
 
 Gui gui = Gui(window);

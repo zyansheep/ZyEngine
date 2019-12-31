@@ -1,4 +1,3 @@
 build*
 .DS_Store
-CMakeSettings.json
 process-palette.json

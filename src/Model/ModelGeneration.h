@@ -107,7 +107,7 @@ namespace ModelGeneration {
       {0, 5, 1}
     });
   }
-  static Model LoadObj(){
-    
-  }
+  /*static Model LoadObj(){
+    return Model();
+  }*/
 }

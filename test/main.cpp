@@ -3,12 +3,12 @@
 #include <array>
 #include <math.h>
 
+#include <glm/gtx/color_space.hpp>
+
 #include "World/World.h"
 #include "World/CameraController.h"
 #include "Core/Gui.h"
 #include "Model/Model.h"
-
-#include <glm/gtx/color_space.hpp>
 
 Window window = Window(1280,720, "Graphics Engine Testing");
 
@@ -19,7 +19,6 @@ World world = World(&window, &camera);
 
 Object* plane;
 Object* cube;
-Object* cube2;
 Object* sphere;
 Shader shader;
 
@@ -27,24 +26,14 @@ Model cubeModel = ModelGeneration::Cube();
 Model sphereModel = ModelGeneration::Icosphere(4);
 
 ImVec4 clearColor = ImVec4(0.5,0.5,1.0,1.0);
-glm::vec4 color = glm::vec4(1.0,1.0,1.0,1.0);
+glm::vec3 color = glm::vec4(1.0,1.0,1.0,1.0);
 
-#include "cube.cpp"
 void setup(){
-  //controller.Bind(&camera);
-  //Triangle vertex positions
-  shader = Shader("test/shaders/main.vert", "test/shaders/main.frag");
-  
-  Buffer* cube_positions = new Buffer({{ShaderType::Float3, "a_position"}});
-  cube_positions->SetData((float*)cube_vertices_, sizeof(cube_vertices_));
-  Buffer* cube_colors = new Buffer({{ShaderType::Float3, "a_color"}});
-  cube_colors->SetData((float*)cube_colors_, sizeof(cube_colors_));
-  cube = new Object(new VertexArray({cube_positions, cube_colors}), shader);
-  //cube2 = new Object(new VertexArray({cube_positions, cube_colors}), shader);
+  shader = ShaderGeneration::Color();
   
   cubeModel.Load();
-  cube2 = new Object(cubeModel.GetVertexArray(), shader);
-  cube2->Translate(glm::vec3(0, 5, 0));
+  cube = new Object(cubeModel.GetVertexArray(), shader);
+  cube->Translate(glm::vec3(0, 5, 0));
   
   sphereModel.Load();
   sphere = new Object(sphereModel.GetVertexArray(), shader);
@@ -74,7 +63,6 @@ void setup(){
   plane->Translate({-8,-50,-50});
   
   world.AddObject(cube);
-  world.AddObject(cube2);
   world.AddObject(plane);
   world.AddObject(sphere);
   
@@ -82,12 +70,17 @@ void setup(){
   glDepthFunc(GL_LESS);
   
   gui.Init();
+  
+  
 }
 
 void loop(){
   glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   controller.Update();
+  
+  color = glm::rgbColor(glm::vec3{fmod(window.RunTime*10, 1), 1,1});
+  shader.Uniform(shader.GetUniformLocation("u_color"), glm::vec4(color,1.0));
   
   if(window.GetKey(GLFW_KEY_R)){
     controller.Unbind();
@@ -102,13 +95,6 @@ void loop(){
   }
   
   cube->Rotate(90.0f/60, glm::vec3(0.0f, 0.0f, 1.0f));
-  auto dacolor = glm::rgbColor(glm::vec3{fmod(window.RunTime*10, 1), 1,1});
-  for (int v = 0; v < 12*3 ; v++){
-    cube_colors_[3*v+0] = dacolor.r;
-    cube_colors_[3*v+1] = dacolor.g;
-    cube_colors_[3*v+2] = dacolor.b;
-  }
-  cube->GetVertexArray()->GetVertexBuffers()[1]->SetData(cube_colors_, sizeof(cube_colors_));
   
   world.Render();
   world.Draw();

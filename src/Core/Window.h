@@ -5,6 +5,9 @@
 #include <iostream>
 #include <string>
 
+//Evaluate preprocessor arguments
+#include "Preprocessor.h"
+
 class Window{
 public:
   Window(int width, int height, std::string title, bool vsync = true);

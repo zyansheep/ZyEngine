@@ -1,5 +1,6 @@
 #include <string>
 
+#include <glad/glad.h>
 #pragma once
 
 enum class ShaderType {
@@ -20,6 +21,7 @@ static unsigned int GetShaderTypeSize(ShaderType type){
     case ShaderType::Mat4:      return sizeof(float) * 4 * 4;
     case ShaderType::Bool:      return sizeof(bool);
   }
+  return 0;
 }
 
 static unsigned int GetShaderTypeDimension(ShaderType type){
@@ -36,6 +38,7 @@ static unsigned int GetShaderTypeDimension(ShaderType type){
     case ShaderType::Mat4:      return 4 * 4;
     case ShaderType::Bool:      return 1;
   }
+  return 0;
 }
 static unsigned int GetShaderTypeNativeType(ShaderType type){
   switch (type){
@@ -51,4 +54,5 @@ static unsigned int GetShaderTypeNativeType(ShaderType type){
     case ShaderType::Mat4:      return GL_FLOAT;
     case ShaderType::Bool:      return GL_BOOL;
   }
+  return 0;
 }

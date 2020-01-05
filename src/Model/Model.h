@@ -31,4 +31,4 @@ private:
   VertexArray *m_VertexArray;
 };
 
-#include "ModelGenerator.h"
+#include "ModelGeneration.h"

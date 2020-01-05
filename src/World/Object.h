@@ -6,7 +6,7 @@
 #include "glad/glad.h"
 
 #include "Rendering/VertexArray.h"
-#include "Rendering/Shader.cpp"
+#include "Rendering/Shader.h"
 #include "Camera.h"
 
 #pragma once

@@ -11,13 +11,13 @@
   "commands": [
     {
       "namespace": "Build",
-      "action": "Run",
+      "action": "Test",
       "command": "./build/test/Test",
       "arguments": [],
       "cwd": "{fileProjectPath}",
       "inputDialogs": [],
       "env": {},
-      "keystroke": "cmd-e",
+      "keystroke": "ctrl-e",
       "stream": true,
       "outputTarget": "panel",
       "outputBufferSize": 80000,

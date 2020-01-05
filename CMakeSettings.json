@@ -2,7 +2,7 @@
   "configurations": [
     {
       "name": "Debug",
-      "generator": "Unix Makefiles",
+      "generator": "Ninja",
       "configurationType" : "Debug",
       "buildRoot":  "${projectDir}/build/",
       "cmakeCommandArgs":  "",
@@ -15,7 +15,7 @@
     },
     {
       "name": "Release",
-      "generator": "Unix Makefiles",
+      "generator": "Ninja",
       "configurationType" : "Release",
       "buildRoot": "${projectDir}/build/",
       "cmakeCommandArgs": "",

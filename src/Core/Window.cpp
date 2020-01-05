@@ -11,13 +11,13 @@ Window::Window(int width, int height, std::string title, bool vsync)
   }
   
   /* Create a windowed mode window and its OpenGL context */
-  //Enable opengl 3.3 core
-  #ifdef ZY_OSX
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-  #endif
+  //Enable opengl 3.3 core (most compatible across all OSs)
+  
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+  
   m_Window = glfwCreateWindow(m_Width, m_Height, m_Title.c_str(), NULL, NULL);
   if (!m_Window){
     glfwTerminate();

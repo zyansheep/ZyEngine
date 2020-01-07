@@ -1,9 +1,9 @@
 
-#include "glm/glm.hpp"
-#include "glm/ext.hpp"
-#include "glm/gtx/string_cast.hpp"
-#include "glm/gtc/quaternion.hpp"
-#include "glad/glad.h"
+#include <glm/glm.hpp>
+#include <glm/ext.hpp>
+#include <glm/gtx/string_cast.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <glad/glad.h>
 
 #include "Rendering/VertexArray.h"
 #include "Rendering/Shader.h"

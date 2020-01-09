@@ -9,6 +9,7 @@ public:
   std::vector<glm::vec3> Vertices;
   std::vector<glm::uvec3> Indices;
   std::vector<glm::vec2> UVs;
+  std::vector<glm::vec3> Normals;
   
   void Load(){
     if(m_VertexArray == NULL){

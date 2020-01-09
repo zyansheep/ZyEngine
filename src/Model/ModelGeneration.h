@@ -1,4 +1,5 @@
 #include <map>
+
 namespace ModelGeneration {
   static Model Icosphere(uint recursionLevel){
     const static float t = (1.0 + sqrt(5.0)) / 10.0;
@@ -107,7 +108,21 @@ namespace ModelGeneration {
       {0, 5, 1}
     });
   }
-  /*static Model LoadObj(){
-    return Model();
-  }*/
+  
+  #define FAST_OBJ_IMPLEMENTATION
+  #include "ObjLoad.h"
+  static Model ObjFile(std::string path){
+    Model m({}, {});
+    fastObjMesh* mesh = fast_obj_read(path.c_str());
+    
+    m.Vertices.resize(mesh->position_count);
+    memcpy(&m.Vertices[0], mesh->positions, mesh->position_count*sizeof(float)*3);
+    
+    m.Indices.resize(mesh->face_count);
+    for(int i=0;i<mesh->face_count;i++){
+      m.Indices[i] = {mesh->indices[i*3].p, mesh->indices[i*3+1].p, mesh->indices[i*3+2].p};
+    }
+    
+    return m;
+  }
 }

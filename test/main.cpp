@@ -20,10 +20,12 @@ World world = World(&window, &camera);
 Object* plane;
 Object* cube;
 Object* sphere;
+Object* suzanne;
 Shader shader;
 
 Model cubeModel = ModelGeneration::Cube();
 Model sphereModel = ModelGeneration::Icosphere(4);
+Model suzanneModel = ModelGeneration::ObjFile("test/suzanne.obj");
 
 ImVec4 clearColor = ImVec4(0.5,0.5,1.0,1.0);
 glm::vec3 color = glm::vec4(1.0,1.0,1.0,1.0);
@@ -38,6 +40,10 @@ void setup(){
   sphereModel.Load();
   sphere = new Object(sphereModel.GetVertexArray(), shader);
   sphere->Translate(glm::vec3(5, 0, 0));
+  
+  suzanneModel.Load();
+  suzanne = new Object(suzanneModel.GetVertexArray(), shader);
+  suzanne->Translate(glm::vec3(-5,0,0));
   
   Buffer* plane_attrib_buffer = new Buffer({
     {ShaderType::Float3, "a_position"},
@@ -65,13 +71,12 @@ void setup(){
   world.AddObject(cube);
   world.AddObject(plane);
   world.AddObject(sphere);
+  world.AddObject(suzanne);
   
   glEnable(GL_DEPTH_TEST);
   glDepthFunc(GL_LESS);
   
   gui.Init();
-  
-  
 }
 
 void loop(){

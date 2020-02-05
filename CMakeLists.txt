@@ -3,8 +3,11 @@ project(ZyEngine)
 
 set (CMAKE_CXX_STANDARD 17)
 set(CMAKE_GENERATOR "Unix Makefiles")
+set(CMAKE_BUILD_TYPE Debug)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DIMGUI_IMPL_OPENGL_LOADER_GLAD")
+#Enable Address Sanitizer for detecting runtime memory leaks
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
 
 option (GLFW_BUILD_EXAMPLES OFF)
 option (GLFW_BUILD_TESTS OFF)

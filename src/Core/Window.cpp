@@ -18,6 +18,8 @@ Window::Window(int width, int height, std::string title, bool vsync)
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   
+  //glfwWindowHint( GLFW_DOUBLEBUFFER, GL_FALSE );
+  
   m_Window = glfwCreateWindow(m_Width, m_Height, m_Title.c_str(), NULL, NULL);
   if (!m_Window){
     glfwTerminate();
@@ -29,7 +31,7 @@ Window::Window(int width, int height, std::string title, bool vsync)
   
   glfwMakeContextCurrent(m_Window);
   gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
-  glfwSwapInterval(1);
+  glfwSwapInterval(1); //Vsync enable
   
   glfwSetWindowSizeCallback(m_Window, GlobalWindowResizeCallback);
   
@@ -53,7 +55,7 @@ void Window::Start(void (*loop)()){
     /* Render here */
     loop();
     
-    /* Swap front and back buffers */
+    /* Swap display and drawing buffers */
     glfwSwapBuffers(m_Window);
     
     /* Poll for and process events */

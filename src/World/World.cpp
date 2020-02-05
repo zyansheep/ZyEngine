@@ -10,6 +10,7 @@ void World::AddObject(Object* object){
   m_Objects.push_back(object);
 }
 void World::Render(){
+  m_Camera->Update();
   for(Object* obj : m_Objects){
     obj->Render(m_Camera);
   }

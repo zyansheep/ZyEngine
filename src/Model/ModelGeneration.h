@@ -119,10 +119,10 @@ namespace ModelGeneration {
     memcpy(&m.Vertices[0], mesh->positions, mesh->position_count*sizeof(float)*3);
     
     m.Indices.resize(mesh->face_count);
-    for(int i=0;i<mesh->face_count;i++){
+    for(uint i=0;i<mesh->face_count;i++){
       m.Indices[i] = {mesh->indices[i*3].p, mesh->indices[i*3+1].p, mesh->indices[i*3+2].p};
     }
-    
+    delete mesh; //clean up, clean up, everybody, deallocate your pointers!
     return m;
   }
 }

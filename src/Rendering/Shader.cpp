@@ -8,14 +8,14 @@ Shader::Shader(const std::string& vertexSource, const std::string& fragmentSourc
   unsigned int FragmentID;
   CompileShader(FragmentID, GL_FRAGMENT_SHADER, fragmentSource.c_str());
   
-  printf("Compiling Shader\n");
+  //printf("Compiling Shader\n");
   CompileProgram(program, {&VertexID, &FragmentID});
 }
 unsigned int program;
 
 void Shader::CompileProgram(unsigned int &ProgramID, std::vector<unsigned int*> shaders){
   ProgramID = glCreateProgram();
-  for(int i=0;i<shaders.size();i++){
+  for(uint i=0;i<shaders.size();i++){
     glAttachShader(ProgramID, *(shaders[i]));
   }
 	

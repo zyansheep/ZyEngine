@@ -7,41 +7,63 @@
 
 #include "Buffer.h"
 
+#pragma once
+
 class VertexArray {
 public:
-  VertexArray(std::vector<Buffer*> vertexBuffers, Buffer* indexBuffer = NULL)
+  VertexArray(std::vector<Buffer*> buffers, Buffer* indexBuffer = NULL)
   :VertexArray(){
-    for(Buffer* buff : vertexBuffers){
-      AddVertexBuffer(buff);
-    }
-    if(indexBuffer != NULL){
-      SetIndexBuffer(indexBuffer);
-    }
+    Buffers = buffers;
+    IndexBuffer = indexBuffer;
+    Configure();
   }
-  VertexArray(){
-    glGenVertexArrays(1, &m_Address);
-    glBindVertexArray(m_Address);
-  }
+  VertexArray(){ glGenVertexArrays(1, &m_Address); }
   ~VertexArray(){
     glDeleteVertexArrays(1, &m_Address);
   }
-  void Bind();
-  void AddVertexBuffer(Buffer* buffer);
-  void SetIndexBuffer(Buffer* buffer);
   
-  void Draw(unsigned int drawMode = GL_TRIANGLES);
+  void Bind(){ glBindVertexArray(m_Address); }
+  void Unbind(){ glBindVertexArray(0); }
   
-  std::vector<Buffer*>& GetVertexBuffers(){
-    return m_VertexBuffers;
+  void Reset(){
+    glDeleteVertexArrays(1, &m_Address);
+    Loaded = false;
+    m_Attributes.clear();
+    glGenVertexArrays(1, &m_Address);
   }
-private:
-  std::vector<Buffer*> m_VertexBuffers;
-  unsigned int m_VertexCount;
+  //Clear all linked buffers and reset Object
+  void Clear(){
+    Reset();
+    Buffers.clear();
+    InstanceBuffer = NULL;
+    IndexBuffer = NULL;
+  }
+  //Deallocate items before Clearing
+  void ClearUnalloc(){
+    for(Buffer* buffer : Buffers){
+      delete buffer;
+    }
+    delete InstanceBuffer;
+    delete IndexBuffer;
+    Clear();
+  }
   
-  Buffer* m_IndexBuffer = NULL;
-  unsigned int m_IndexCount;
+  void RegisterAttribute(Buffer* buffer, uint elementIndex, bool isInstanceBuffer = false); //Register Buffer* into opengl VAO
+  void Configure(); //function called to configure all set buffers into vertexarray
+  void Draw(unsigned int drawMode = GL_TRIANGLES); //call gl draw function depending set buffers
+  std::vector<BufferElement> GetAttributes(){
+    return m_Attributes;
+  }
+  
+  bool Loaded = false;
+  std::vector<Buffer*> Buffers;
+  Buffer* InstanceBuffer = NULL;
+  Buffer* IndexBuffer = NULL;
+private:
+  std::vector<BufferElement> m_Attributes;
+  unsigned int m_VertexCount = 0; //For Array Drawing
+  unsigned int m_IndexCount = 0; //For Element Drawing
+  unsigned int m_InstanceCount = 0; //For Instance Drawing
   
   unsigned int m_Address;
-  
-  unsigned int m_AttribIndex = 0;
 };

@@ -18,7 +18,8 @@ void setup(){
   //Load and initialize objects
   /*
   model.Load();
-  object = new Object(cubeModel.GetVertexArray(), shader);
+  object = new Object(cubeModel.MakeVertexArray(), shader);
+  world.AddObject(object) //Make sure to add any objects you created to the world
   */
   
   //controller.Bind(&camera);

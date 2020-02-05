@@ -1,0 +1,2 @@
+add_executable(ExampleInstancing main.cpp)
+target_link_libraries(ExampleInstancing ZyEngine)

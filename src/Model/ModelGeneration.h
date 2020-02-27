@@ -2,8 +2,11 @@
 
 namespace ModelGeneration {
   static Model Icosphere(uint recursionLevel){
-    const static float t = (1.0 + sqrt(5.0)) / 10.0;
-    const static float s = (1.0 - sqrt(5.0)) / 10.0;
+    //const static float t = (1.0 + sqrt(5.0)) / 10.0;
+    //const static float s = (1.0 - sqrt(5.0)) / 10.0;
+    
+    const static float t = 0.525731112119133606f;
+    const static float s = 0.850650808352039932f;
     Model model = Model({
       {-s,  t,  0},
       { s,  t,  0},

@@ -93,7 +93,11 @@ void Window::MouseScrollCallback(double xoffset, double yoffset){
   
 }
 //Global Callbacks
+void Window::GlobalFrameResizeCallback(GLFWwindow* window, int w, int h){
+  glViewport(0, 0, w, h);
+}
 void Window::GlobalWindowResizeCallback(GLFWwindow* window, int w, int h){
+  glViewport(0, 0, w, h);
   Window::GetHandler(window)->WindowResizeCallback(w, h);
 }
 void Window::GlobalKeyButtonCallback(GLFWwindow* window, int key, int scancode, int action, int mods){

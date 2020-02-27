@@ -22,6 +22,7 @@ private:
   void MouseButtonCallback(int button, int action, int mods);
   void MouseScrollCallback(double xoffset, double yoffset);
   //Global Callbacks
+  static void GlobalFrameResizeCallback(GLFWwindow* window, int w, int h);
   static void GlobalWindowResizeCallback(GLFWwindow* window, int w, int h);
   static void GlobalKeyButtonCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
   static void GlobalMouseEnterCallback(GLFWwindow* window, int entered);

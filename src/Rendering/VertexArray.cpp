@@ -1,11 +1,11 @@
 #include "VertexArray.h"
 
-void VertexArray::RegisterAttribute(Buffer* buffer, uint elementIndex, bool isInstanceBuffer){
+void VertexArray::RegisterAttribute(Buffer* buffer, unsigned int elementIndex, bool isInstanceBuffer){
   const BufferElement &element = buffer->GetLayout().GetElements()[elementIndex];
   buffer->Bind();
   
-  uint repeat = 1;
-  uint elemDimension = GetShaderTypeDimension(element.Type);
+  unsigned int repeat = 1;
+  unsigned int elemDimension = GetShaderTypeDimension(element.Type);
   if(elemDimension > 4){
     switch(element.Type){
       case ShaderType::Mat4:
@@ -16,11 +16,11 @@ void VertexArray::RegisterAttribute(Buffer* buffer, uint elementIndex, bool isIn
     }
   }
   
-  uint baseDimension = elemDimension / repeat;
-  uint index;
+  unsigned int baseDimension = elemDimension / repeat;
+  unsigned int index;
   //Anything larger then vec4 has to be sent in multiples of vec4
   //e.g. mat4 has to be sent as 4 vec4s
-  for(uint i=0;i<repeat;i++){
+  for(unsigned int i=0;i<repeat;i++){
     index = m_Attributes.size();
     m_Attributes.push_back(element);
     //increase offset each time
@@ -46,7 +46,7 @@ void VertexArray::Configure(){
   if(Loaded){Reset();}
   Bind();
   for(Buffer* buffer : Buffers){
-    for(uint i = 0;i < buffer->GetLayout().GetElements().size();i++){
+    for(unsigned int i = 0;i < buffer->GetLayout().GetElements().size();i++){
       RegisterAttribute(buffer, i);
     }
   }

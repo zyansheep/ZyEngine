@@ -15,7 +15,7 @@ unsigned int program;
 
 void Shader::CompileProgram(unsigned int &ProgramID, std::vector<unsigned int*> shaders){
   ProgramID = glCreateProgram();
-  for(uint i=0;i<shaders.size();i++){
+  for(unsigned int i=0;i<shaders.size();i++){
     glAttachShader(ProgramID, *(shaders[i]));
   }
 	

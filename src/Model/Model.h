@@ -1,3 +1,6 @@
+#include <vector>
+#include <glm/glm.hpp>
+
 #include "Rendering/VertexArray.h"
 
 class Model {

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 #include <string>
 #include <initializer_list>
@@ -5,8 +7,6 @@
 #include <glad/glad.h>
 
 #include "ShaderType.h"
-
-#pragma once
 
 struct BufferElement {
   ShaderType Type;

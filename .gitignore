@@ -8,3 +8,4 @@ build*
 process-palette.json
 compile_commands.json
 vgcore*
+.clangd

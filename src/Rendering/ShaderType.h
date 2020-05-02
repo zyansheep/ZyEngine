@@ -1,7 +1,9 @@
+#pragma once
+
 #include <string>
 
 #include <glad/glad.h>
-#pragma once
+
 
 enum class ShaderType {
   Float, Float2, Float3, Float4, Int, Int2, Int3, Int4, Mat3, Mat4, Bool

@@ -48,7 +48,7 @@ public:
     Clear();
   }
   
-  void RegisterAttribute(Buffer* buffer, uint elementIndex, bool isInstanceBuffer = false); //Register Buffer* into opengl VAO
+  void RegisterAttribute(Buffer* buffer, unsigned int elementIndex, bool isInstanceBuffer = false); //Register Buffer* into opengl VAO
   void Configure(); //function called to configure all set buffers into vertexarray
   void Draw(unsigned int drawMode = GL_TRIANGLES); //call gl draw function depending set buffers
   std::vector<BufferElement> GetAttributes(){

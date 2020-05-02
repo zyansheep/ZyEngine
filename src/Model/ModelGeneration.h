@@ -1,7 +1,7 @@
 #include <map>
 
 namespace ModelGeneration {
-  static Model Icosphere(uint recursionLevel){
+  static Model Icosphere(unsigned int recursionLevel){
     //const static float t = (1.0 + sqrt(5.0)) / 10.0;
     //const static float s = (1.0 - sqrt(5.0)) / 10.0;
     
@@ -50,9 +50,9 @@ namespace ModelGeneration {
     
     //mapping vert indexs of line where midpoint is generated to midpoint index
     //used to check if midpoint index was allready generated
-    std::map<std::pair<uint, uint>, uint> midpointLookup;
-    auto getMidpointIndex = [&] (uint indexA, uint indexB) {
-      std::pair<uint, uint> key(indexA, indexB);
+    std::map<std::pair<unsigned int, unsigned int>, unsigned int> midpointLookup;
+    auto getMidpointIndex = [&] (unsigned int indexA, unsigned int indexB) {
+      std::pair<unsigned int, unsigned int> key(indexA, indexB);
       if(midpointLookup.find(key) == midpointLookup.end()){
         //not found, create new vertex
         
@@ -65,14 +65,14 @@ namespace ModelGeneration {
       }
       return midpointLookup.at(key);
     };
-    for (uint i = 0; i < recursionLevel; i++){
+    for (unsigned int i = 0; i < recursionLevel; i++){
       midpointLookup.clear();
       std::vector<glm::uvec3> faces;
       for (glm::uvec3 &tri : model.Indices){
         //get midpoint (and add vertices of midpoints if don't exist)
-        uint sub1 = getMidpointIndex(tri.x, tri.y);
-        uint sub2 = getMidpointIndex(tri.y, tri.z);
-        uint sub3 = getMidpointIndex(tri.z, tri.x);
+        unsigned int sub1 = getMidpointIndex(tri.x, tri.y);
+        unsigned int sub2 = getMidpointIndex(tri.y, tri.z);
+        unsigned int sub3 = getMidpointIndex(tri.z, tri.x);
         
         //take the 6 vertices and make 4 triangles
         faces.emplace_back(sub1, sub2, sub3); //center triangle
@@ -122,7 +122,7 @@ namespace ModelGeneration {
     memcpy(&m.Vertices[0], mesh->positions, mesh->position_count*sizeof(float)*3);
     
     m.Indices.resize(mesh->face_count);
-    for(uint i=0;i<mesh->face_count;i++){
+    for(unsigned int i=0;i<mesh->face_count;i++){
       m.Indices[i] = {mesh->indices[i*3].p, mesh->indices[i*3+1].p, mesh->indices[i*3+2].p};
     }
     delete mesh; //clean up, clean up, everybody, deallocate your pointers!

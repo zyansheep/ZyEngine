@@ -20,7 +20,7 @@ public:
   ~Object(){m_VertexArray->ClearUnalloc();}
   void Render(Camera* viewport){
     if(m_MVPVec.size() != MatrixArray.size()){ m_MVPVec = MatrixArray; }
-    for(uint i=0;i<MatrixArray.size();i++){ m_MVPVec[i] = viewport->matrix * MatrixArray[i]; } //create MVP matricies
+    for(unsigned int i=0;i<MatrixArray.size();i++){ m_MVPVec[i] = viewport->matrix * MatrixArray[i]; } //create MVP matricies
     if(MatrixArray.size() > 1){
       //Object is allowed to modify Instance Buffer
       Buffer* buffer = m_VertexArray->InstanceBuffer;
@@ -30,7 +30,7 @@ public:
         buffer = m_VertexArray->InstanceBuffer;
         std::cout << "Printing Attributes" << '\n';
         auto elems = m_VertexArray->GetAttributes();
-        for(uint i=0;i<elems.size();i++){
+        for(unsigned int i=0;i<elems.size();i++){
           std::cout << "Index: "<<i<<" name: "<<elems[i].Name << " offset: "<<elems[i].Offset<<'\n';
         }
       }
@@ -56,13 +56,13 @@ public:
     m_VertexArray->Draw();
   }
   
-  void Rotate(float degrees, glm::vec3 axis, uint index = 0){
+  void Rotate(float degrees, glm::vec3 axis, unsigned int index = 0){
     MatrixArray[index] = glm::rotate(MatrixArray[index], glm::radians(degrees), axis);
   }
-  void Translate(glm::vec3 v, uint index = 0){
+  void Translate(glm::vec3 v, unsigned int index = 0){
     MatrixArray[index] = glm::translate(MatrixArray[index], v);
   }
-  void Scale(glm::vec3 factor, uint index = 0){
+  void Scale(glm::vec3 factor, unsigned int index = 0){
     MatrixArray[index] = glm::scale(MatrixArray[index], factor);
   }
   

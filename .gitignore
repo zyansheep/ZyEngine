@@ -1,4 +1,10 @@
+# Build Folder
 build*
+
+# System files
 .DS_Store
+
+# Editor Config Files
 process-palette.json
+compile_commands.json
 vgcore*

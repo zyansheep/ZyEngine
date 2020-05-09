@@ -9,9 +9,8 @@ Shader::Shader(const std::string& vertexSource, const std::string& fragmentSourc
   CompileShader(FragmentID, GL_FRAGMENT_SHADER, fragmentSource.c_str());
   
   //printf("Compiling Shader\n");
-  CompileProgram(program, {&VertexID, &FragmentID});
+  CompileProgram(m_ID, {&VertexID, &FragmentID});
 }
-unsigned int program;
 
 void Shader::CompileProgram(unsigned int &ProgramID, std::vector<unsigned int*> shaders){
   ProgramID = glCreateProgram();
@@ -55,10 +54,13 @@ void Shader::CompileShader(unsigned int &ShaderID, unsigned int type, const std:
 }
 
 void Shader::Bind(){
-  glUseProgram(program);
+  glUseProgram(m_ID);
+}
+void Shader::Unbind(){
+  glUseProgram(0);
 }
 int Shader::GetUniformLocation(const char* uniform_handle){
-  return glGetUniformLocation(program, uniform_handle);
+  return glGetUniformLocation(m_ID, uniform_handle);
 }
 void Shader::Uniform(int location, float toSend){
   glUniform1f(location, toSend);

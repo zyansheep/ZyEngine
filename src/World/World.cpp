@@ -12,7 +12,7 @@ void World::AddObject(Object* object){
 void World::Render(){
   m_Camera->Update();
   for(Object* obj : m_Objects){
-    obj->Render(m_Camera);
+    obj->Render(*m_Camera);
   }
 }
 void World::Draw(){

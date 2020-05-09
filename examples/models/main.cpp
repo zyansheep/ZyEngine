@@ -41,7 +41,7 @@ void setup(){
 }
 
 void loop(){
-  glClearColor(255,255,255,255);
+  glClearColor(0,0,0,255);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   
   if(window.GetKey(GLFW_KEY_R)){
@@ -56,6 +56,9 @@ void loop(){
     controller.Bind(&camera);
   }
   controller.Update();
+  
+  //Send color to shader
+  shader.Uniform(shader.GetUniformLocation("u_color"), glm::vec4(255,0,255,255));
   
   world.Render();
   world.Draw();

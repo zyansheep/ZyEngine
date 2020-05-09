@@ -8,17 +8,18 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Core/Functions.h"
+#include "Asset.h"
 
 class Shader {
 public:
   Shader();
   Shader(const std::string& vertexSource, const std::string& fragmentSource);
-  unsigned int program;
   
   void CompileShader(unsigned int &ShaderID, unsigned int type, const std::string& source);
   static void CompileProgram(unsigned int &ProgramID, std::vector<unsigned int*> shaders);
   
   void Bind();
+  void Unbind();
   int GetUniformLocation(const char* uniform_handle);
   
   //#include "UniformFunctions.cpp" //Import uniform functions
@@ -44,11 +45,37 @@ public:
   
   //Matrixes
   void Uniform(int location, glm::mat4 toSend);
+private:
+  unsigned int m_ID;
 };
 
 #define SHADER_TYPE "#version 330 core\n"
 
 namespace ShaderGeneration {
+  static Shader Texture(){
+    std::string vertexShader = std::string(SHADER_TYPE) + R"(
+      layout(location = 0) in vec3 a_position;
+      layout(location = 1) in vec2 a_texCoords;
+      
+      out vec2 i_texCoord;
+      
+      uniform mat4 u_matrix;
+      
+      out vec4 i_color;
+      
+      void main() {
+        i_texCoord = a_texCoords;
+        gl_Position = u_matrix * vec4(a_position, 1);
+      }
+    )";
+    std::string fragShader = std::string(SHADER_TYPE) + R"(
+      in vec2 i_texCoord;
+      uniform sampler2D u_texture;
+      out vec4 frag_color;
+      void main() { frag_color = texture(u_texture, i_texCoord); }
+    )";
+    return Shader(vertexShader, fragShader);
+  }
   static Shader Color(){
     std::string vertexShader = std::string(SHADER_TYPE) + R"(
       layout(location = 0) in vec3 a_position;

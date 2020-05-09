@@ -7,8 +7,8 @@
 
 Texture::Texture(const std::string& filename)
 {
-  glGenTextures(1, &m_Texture);
-  glBindTexture(GL_TEXTURE_2D, m_Texture);
+  glGenTextures(1, &m_ID);
+  glBindTexture(GL_TEXTURE_2D, m_ID);
 
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -43,15 +43,18 @@ Texture::Texture(const std::string& filename)
 
   stbi_image_free(data);
 }
+std::shared_ptr<Texture> Texture::New(const std::string& filename){
+  return std::make_shared<Texture>(filename);
+}
 
 Texture::~Texture()
 {
-  glDeleteTextures(1, &m_Texture);
+  glDeleteTextures(1, &m_ID);
 }
 
 void Texture::Bind() const
 {
-  glBindTexture(GL_ARRAY_BUFFER, m_Texture);
+  glBindTexture(GL_ARRAY_BUFFER, m_ID);
 }
 
 void Texture::Unbind() const

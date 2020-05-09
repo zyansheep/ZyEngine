@@ -1,6 +1,18 @@
 #include <map>
 
 namespace ModelGeneration {
+  //ex = Extents x, ey = Extens y
+  static Model Square(float ex, float ey){
+    return Model({
+      {-ex,-ey,0}, //Left Bottom
+      {-ex, ey,0}, //Left Top
+      { ex, ey,0}, //Right Top
+      { ex,-ey,0} //Right Bottom
+    },{
+      {0,1,2},
+      {0,2,3}
+    });
+  }
   static Model Icosphere(unsigned int recursionLevel){
     //const static float t = (1.0 + sqrt(5.0)) / 10.0;
     //const static float s = (1.0 - sqrt(5.0)) / 10.0;

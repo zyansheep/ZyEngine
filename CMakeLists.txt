@@ -24,12 +24,11 @@ libs/imgui/imgui_demo.cpp
 libs/imgui/imgui_widgets.cpp
 libs/imgui/examples/imgui_impl_opengl3.cpp
 libs/imgui/examples/imgui_impl_glfw.cpp)
-include_directories(libs/imgui)
 add_definitions(-DIMGUI_IMPL_OPENGL_LOADER_GLAD)
 
 add_library(ZyEngine ${SOURCES} ${HEADERS} ${IMGUI_SRC})
-target_include_directories(ZyEngine PRIVATE libs/stb libs/imgui)
-target_link_libraries(ZyEngine LINK_PUBLIC glad glfw glm )
+target_include_directories(ZyEngine PUBLIC libs/imgui libs/stb)
+target_link_libraries(ZyEngine LINK_PUBLIC glad glfw glm)
 
 add_subdirectory(test)
 

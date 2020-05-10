@@ -4,9 +4,12 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <string>
+#include "Preprocessor.h"
+
+#include "stb_image_write.h"
 
 //Evaluate preprocessor arguments
-#include "Preprocessor.h"
+#include "Core/Image.h"
 
 class Window{
 public:
@@ -44,6 +47,7 @@ public:
   unsigned int MouseX, MouseY;
   
   void Start(void (*loop)());
+  bool Screenshot(const std::string& path);
   
   double GetFrameTime(){ return FrameTime; }
   void SetVerticalSync(bool val){ glfwSwapInterval((int)val); }
@@ -53,4 +57,5 @@ public:
   void SetWindowDimensions(int width, int height);
   std::string GetTitle(){ return m_Title; }
   void SetTitle(std::string title){ m_Title = title; }
+  void SetIcons(Image* icons, size_t size);
 };

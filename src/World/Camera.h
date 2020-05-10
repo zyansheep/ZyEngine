@@ -11,6 +11,9 @@ struct CameraProperties {
   float AspectRatio = 16/9;
   float NearField = 0.01f;
   float FarField = 100.0f;
+  bool Ortho = false;
+  float ZoomX = 1;
+  float ZoomY = 1;
   
   CameraProperties(){};
   CameraProperties(float aspectRatio)
@@ -22,6 +25,8 @@ struct CameraProperties {
   CameraProperties(float fov, Window* window)
   :FieldOfView(fov),
   AspectRatio((float)window->GetWidth() / (float)window->GetHeight()){}
+  
+  void Update(Window& window){ AspectRatio = (window.GetWidth() / window.GetHeight()); }
 };
 
 class Camera {
@@ -38,12 +43,24 @@ public:
     matrix = projection * view;
   }
   void UpdateProjection(){
-    projection = glm::perspective(
-      glm::radians(Properties.FieldOfView), 
-      Properties.AspectRatio, 
-      Properties.NearField, 
-      Properties.FarField
-    );
+    if(!Properties.Ortho){
+      projection = glm::perspective(
+        glm::radians(Properties.FieldOfView), 
+        Properties.AspectRatio, 
+        Properties.NearField, 
+        Properties.FarField
+      );
+    }else{
+      projection = glm::ortho(
+        -Properties.ZoomX,
+        Properties.ZoomX,
+        -Properties.ZoomY,
+        Properties.ZoomY,
+        Properties.NearField, 
+        Properties.FarField
+      );
+    }
+    
     matrix = projection * view;
   }
   void UpdateView(){

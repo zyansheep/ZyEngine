@@ -8,7 +8,6 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Core/Functions.h"
-#include "Asset.h"
 
 class Shader {
 public:

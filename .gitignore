@@ -5,7 +5,5 @@ build*
 .DS_Store
 
 # Editor Config Files
-process-palette.json
-compile_commands.json
-vgcore*
 .clangd
+.vscode

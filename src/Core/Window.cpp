@@ -1,6 +1,10 @@
 #include "Window.h"
 #include "Preprocessor.h"
 
+//For Screenshots
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image_write.h"
+
 Window::Window(int width, int height, std::string title, bool vsync)
 : m_Width(width), m_Height(height), m_Title(title){
   /* Initialize the library */
@@ -64,11 +68,43 @@ void Window::Start(void (*loop)()){
 
   glfwTerminate();
 }
+bool Window::Screenshot(const std::string& path) {
+  GLint viewport[4];
+  glGetIntegerv(GL_VIEWPORT, viewport);
+
+  int x = viewport[0];
+  int y = viewport[1];
+  int width = viewport[2];
+  int height = viewport[3];
+
+  char *data = (char*) malloc((size_t) (width * height * 3)); // 3 components (R, G, B)
+
+  if (!data)
+      return 0;
+
+  glPixelStorei(GL_PACK_ALIGNMENT, 1);
+  glReadPixels(x, y, width, height, GL_RGB, GL_UNSIGNED_BYTE, data);
+
+  int saved = stbi_write_png(path.c_str(), width, height, 3, data, 0);
+
+  free(data);
+
+  return saved;
+}
+
 GLFWwindow* Window::GetNative(){
   return m_Window;
 }
 Window* Window::GetHandler(GLFWwindow* window){
   return (Window*)(glfwGetWindowUserPointer(window));
+}
+
+void Window::SetIcons(Image* icons, size_t size){
+  GLFWimage* images = new GLFWimage[size];
+  for(size_t i = 0; i < size; i++){
+    images[i] = icons[i].CreateGLFWImage();
+  }
+  glfwSetWindowIcon(m_Window, size, images);
 }
 
 //Callbacks

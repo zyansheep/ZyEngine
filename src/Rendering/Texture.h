@@ -3,6 +3,9 @@
 #include <string>
 #include <memory>
 
+#include <glad/glad.h>
+#include <stb_image.h>
+
 //#include "Asset.h"
 
 class Texture{

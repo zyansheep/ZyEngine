@@ -1,7 +1,5 @@
 #include "Texture.h"
 
-#include <glad/glad.h>
-
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
@@ -17,7 +15,7 @@ Texture::Texture(const std::string& filename)
 
   int width, height, channels;
 
-  stbi_set_flip_vertically_on_load(1);
+  stbi_set_flip_vertically_on_load(true);
   unsigned char* data = stbi_load(filename.c_str(), &width, &height, &channels, 0);
 
   int format = 0;

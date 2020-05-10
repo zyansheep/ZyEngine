@@ -62,47 +62,85 @@ void Shader::Unbind(){
 int Shader::GetUniformLocation(const char* uniform_handle){
   return glGetUniformLocation(m_ID, uniform_handle);
 }
-void Shader::Uniform(int location, float toSend){
+void Shader::Uniform(int location, const float toSend){
   glUniform1f(location, toSend);
 }
-void Shader::Uniform(int location, int toSend){
+void Shader::Uniform(int location, size_t count, const float* toSend){
+  glUniform1fv(location, count, toSend);
+}
+
+void Shader::Uniform(int location, const int toSend){
   glUniform1i(location, toSend);
 }
-void Shader::Uniform(int location, unsigned int toSend){
+void Shader::Uniform(int location, size_t count, const int* toSend){
+  glUniform1iv(location, count, toSend);
+}
+
+void Shader::Uniform(int location, const unsigned int toSend){
   glUniform1ui(location, toSend);
+}
+void Shader::Uniform(int location, size_t count, const unsigned int* toSend){
+  glUniform1uiv(location, count, toSend);
 }
 
 //Vectors length 2
-void Shader::Uniform(int location, glm::vec<2, float> toSend){
+void Shader::Uniform(int location, const glm::vec<2, float> toSend){
   glUniform2fv(location, 1, glm::value_ptr(toSend));
 }
-void Shader::Uniform(int location, glm::vec<2, int> toSend){
+void Shader::Uniform(int location, size_t count, const glm::vec<2, float>* toSend){
+  glUniform2fv(location, count, (float*)toSend);
+}
+void Shader::Uniform(int location, const glm::vec<2, int> toSend){
   glUniform2iv(location, 1, glm::value_ptr(toSend));
 }
-void Shader::Uniform(int location, glm::vec<2, unsigned int> toSend){
+void Shader::Uniform(int location, size_t count, const glm::vec<2, int>* toSend){
+  glUniform2iv(location, count, (int*)toSend);
+}
+void Shader::Uniform(int location, const glm::vec<2, unsigned int> toSend){
   glUniform2uiv(location, 1, glm::value_ptr(toSend));
+}
+void Shader::Uniform(int location, size_t count, const glm::vec<2, unsigned int>* toSend){
+  glUniform2uiv(location, count, (unsigned int*)toSend);
 }
 
 //Vectors length 3
-void Shader::Uniform(int location, glm::vec<3, float> toSend){
+void Shader::Uniform(int location, const glm::vec<3, float> toSend){
   glUniform3fv(location, 1, glm::value_ptr(toSend));
 }
-void Shader::Uniform(int location, glm::vec<3, int> toSend){
+void Shader::Uniform(int location, size_t count, const glm::vec<3, float>* toSend){
+  glUniform3fv(location, count, (float*)toSend);
+}
+void Shader::Uniform(int location, const glm::vec<3, int> toSend){
   glUniform3iv(location, 1, glm::value_ptr(toSend));
 }
-void Shader::Uniform(int location, glm::vec<3, unsigned int> toSend){
+void Shader::Uniform(int location, size_t count, const glm::vec<3, int>* toSend){
+  glUniform3iv(location, count, (int*)toSend);
+}
+void Shader::Uniform(int location, const glm::vec<3, unsigned int> toSend){
   glUniform3uiv(location, 1, glm::value_ptr(toSend));
+}
+void Shader::Uniform(int location, size_t count, const glm::vec<3, unsigned int>* toSend){
+  glUniform3uiv(location, count, (unsigned int*)toSend);
 }
 
 //Vectors length 4
-void Shader::Uniform(int location, glm::vec<4, float> toSend){
+void Shader::Uniform(int location, const glm::vec<4, float> toSend){
   glUniform4fv(location, 1, glm::value_ptr(toSend));
 }
-void Shader::Uniform(int location, glm::vec<4, int> toSend){
+void Shader::Uniform(int location, size_t count, const glm::vec<4, float>* toSend){
+  glUniform4fv(location, count, (float*)toSend);
+}
+void Shader::Uniform(int location, const glm::vec<4, int> toSend){
   glUniform4iv(location, 1, glm::value_ptr(toSend));
 }
-void Shader::Uniform(int location, glm::vec<4, unsigned int> toSend){
+void Shader::Uniform(int location, size_t count, const glm::vec<4, int>* toSend){
+  glUniform4iv(location, count, (int*)toSend);
+}
+void Shader::Uniform(int location, const glm::vec<4, unsigned int> toSend){
   glUniform4uiv(location, 1, glm::value_ptr(toSend));
+}
+void Shader::Uniform(int location, size_t count, const glm::vec<4, unsigned int>* toSend){
+  glUniform4uiv(location, count, (unsigned int*)toSend);
 }
 
 //Matrixes

@@ -23,24 +23,36 @@ public:
   
   //#include "UniformFunctions.cpp" //Import uniform functions
   //Primitive
-  void Uniform(int location, float toSend);
-  void Uniform(int location, int toSend);
-  void Uniform(int location, unsigned int toSend);
+  void Uniform(int location, const float toSend);
+  void Uniform(int location, size_t count, const float* toSend);
+  void Uniform(int location, const int toSend);
+  void Uniform(int location, size_t count, const int* toSend);
+  void Uniform(int location, const unsigned int toSend);
+  void Uniform(int location, size_t count, const unsigned int* toSend);
 
   //Vectors length 2
-  void Uniform(int location, glm::vec<2, float> toSend);
-  void Uniform(int location, glm::vec<2, int> toSend);
-  void Uniform(int location, glm::vec<2, unsigned int> toSend);
+  void Uniform(int location, const glm::vec<2, float> toSend);
+  void Uniform(int location, size_t count, const glm::vec<2, float>* toSend);
+  void Uniform(int location, const glm::vec<2, int> toSend);
+  void Uniform(int location, size_t count, const glm::vec<2, int>* toSend);
+  void Uniform(int location, const glm::vec<2, unsigned int> toSend);
+  void Uniform(int location, size_t count, const glm::vec<2, unsigned int>* toSend);
 
   //Vectors length 3
-  void Uniform(int location, glm::vec<3, float> toSend);
-  void Uniform(int location, glm::vec<3, int> toSend);
-  void Uniform(int location, glm::vec<3, unsigned int> toSend);
+  void Uniform(int location, const glm::vec<3, float> toSend);
+  void Uniform(int location, size_t count, const glm::vec<3, float>* toSend);
+  void Uniform(int location, const glm::vec<3, int> toSend);
+  void Uniform(int location, size_t count, const glm::vec<3, int>* toSend);
+  void Uniform(int location, const glm::vec<3, unsigned int> toSend);
+  void Uniform(int location, size_t count, const glm::vec<3, unsigned int>* toSend);
 
   //Vectors length 4
-  void Uniform(int location, glm::vec<4, float> toSend);
-  void Uniform(int location, glm::vec<4, int> toSend);
-  void Uniform(int location, glm::vec<4, unsigned int> toSend);
+  void Uniform(int location, const glm::vec<4, float> toSend);
+  void Uniform(int location, size_t count, const glm::vec<4, float>* toSend);
+  void Uniform(int location, const glm::vec<4, int> toSend);
+  void Uniform(int location, size_t count, const glm::vec<4, int>* toSend);
+  void Uniform(int location, const glm::vec<4, unsigned int> toSend);
+  void Uniform(int location, size_t count, const glm::vec<4, unsigned int>* toSend);
   
   //Matrixes
   void Uniform(int location, glm::mat4 toSend);

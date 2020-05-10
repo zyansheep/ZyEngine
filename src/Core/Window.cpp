@@ -55,6 +55,7 @@ void Window::Start(void (*loop)()){
     RunTime = glfwGetTime();
     FrameTime = RunTime - m_PreviousFrameTime;
     m_PreviousFrameTime = RunTime;
+    FrameCount += 1;
 
     /* Render here */
     loop();

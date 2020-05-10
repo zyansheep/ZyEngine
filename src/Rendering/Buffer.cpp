@@ -1,5 +1,7 @@
 #include "Buffer.h"
 
+#include <glad/glad.h>
+
 BufferLayout::BufferLayout(std::initializer_list<BufferElement> elements)
 : m_Elements(elements){
     size_t offset = 0;
@@ -10,6 +12,18 @@ BufferLayout::BufferLayout(std::initializer_list<BufferElement> elements)
     m_Stride = offset;
 }
 
+Buffer::Buffer()
+:m_Layout({{ShaderType::Int, "a_index"}}){
+  glGenBuffers(1, &m_Address);
+  m_Layout.SetTypeBuffer(GL_ELEMENT_ARRAY_BUFFER);
+}
+Buffer::Buffer(BufferLayout layout)
+:m_Layout(layout){
+  glGenBuffers(1, &m_Address);
+}
+Buffer::~Buffer(){
+  glDeleteBuffers(1, &m_Address);
+}
 void Buffer::Bind(){
   glBindBuffer(m_Layout.GetTypeBuffer(), m_Address);
 }

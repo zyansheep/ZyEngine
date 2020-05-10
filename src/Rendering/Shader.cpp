@@ -1,5 +1,9 @@
 #include "Shader.h"
 
+#include <glad/glad.h>
+#include <glm/gtc/type_ptr.hpp>
+#include "Core/Functions.h"
+
 Shader::Shader(){}
 Shader::Shader(const std::string& vertexSource, const std::string& fragmentSource){
   unsigned int VertexID;
@@ -146,4 +150,77 @@ void Shader::Uniform(int location, size_t count, const glm::vec<4, unsigned int>
 //Matrixes
 void Shader::Uniform(int location, glm::mat4 toSend){
   glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(toSend) );
+}
+
+
+Shader ShaderGeneration::Texture(){
+  std::string vertexShader = std::string(ZY_SHADER_VERSION) + R"(
+    layout(location = 0) in vec3 a_position;
+    layout(location = 1) in vec2 a_texCoords;
+    
+    out vec2 i_texCoord;
+    
+    uniform mat4 u_matrix;
+    
+    out vec4 i_color;
+    
+    void main() {
+      i_texCoord = a_texCoords;
+      gl_Position = u_matrix * vec4(a_position, 1);
+    }
+  )";
+  std::string fragShader = std::string(ZY_SHADER_VERSION) + R"(
+    in vec2 i_texCoord;
+    uniform sampler2D u_texture;
+    out vec4 frag_color;
+    void main() { frag_color = texture(u_texture, i_texCoord); }
+  )";
+  return Shader(vertexShader, fragShader);
+}
+Shader ShaderGeneration::Color(){
+  std::string vertexShader = std::string(ZY_SHADER_VERSION) + R"(
+    layout(location = 0) in vec3 a_position;
+
+    uniform mat4 u_matrix;
+    uniform vec4 u_color;
+    
+    out vec4 i_color;
+    
+    void main() {
+      i_color = u_color;
+      gl_Position = u_matrix * vec4(a_position, 1);
+    }
+  )";
+  std::string fragShader = std::string(ZY_SHADER_VERSION) + R"(
+    in vec4 i_color;
+    out vec4 frag_color;
+    void main() { frag_color = i_color; }
+  )";
+  return Shader(vertexShader, fragShader);
+}
+Shader ShaderGeneration::Test(){
+  std::string vertexShader = std::string(ZY_SHADER_VERSION) + R"(
+    layout(location = 0) in vec3 a_position;
+
+    uniform mat4 u_matrix;
+    
+    out vec3 i_color;
+    
+    void main() {
+      i_color = sin(a_position);
+      gl_Position = u_matrix * vec4(a_position, 1);
+    }
+  )";
+  std::string fragShader = std::string(ZY_SHADER_VERSION) + R"(
+    in vec3 i_color;
+    out vec4 frag_color;
+    void main() { frag_color = vec4(i_color, 1.0); }
+  )";
+  return Shader(vertexShader, fragShader);
+}
+Shader ShaderGeneration::File(std::string vertexPath, std::string fragmentPath){
+  std::string vertexShader = readFileSync(vertexPath);
+  std::string fragmentShader = readFileSync(fragmentPath);
+  printf("Compiling shader : %s, %s\n", vertexPath.c_str(), fragmentPath.c_str());
+  return Shader(vertexShader, fragmentShader);
 }

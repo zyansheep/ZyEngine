@@ -3,6 +3,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
+#include <glad/glad.h>
+
 Texture::Texture(const std::string& filename)
 {
   glGenTextures(1, &m_ID);

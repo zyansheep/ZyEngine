@@ -1,5 +1,42 @@
 #include "VertexArray.h"
 
+#include "glad/glad.h"
+#include "glm/glm.hpp"
+#include "glm/gtc/type_ptr.hpp"
+
+VertexArray::VertexArray(std::vector<Buffer*> buffers, Buffer* indexBuffer)
+:VertexArray(){
+  Buffers = buffers;
+  IndexBuffer = indexBuffer;
+  Configure();
+}
+VertexArray::VertexArray(){ glGenVertexArrays(1, &m_Address); }
+VertexArray::~VertexArray(){
+  glDeleteVertexArrays(1, &m_Address);
+}
+void VertexArray::Bind(){ glBindVertexArray(m_Address); }
+void VertexArray::Unbind(){ glBindVertexArray(0); }
+void VertexArray::Reset(){
+  glDeleteVertexArrays(1, &m_Address);
+  Loaded = false;
+  m_Attributes.clear();
+  glGenVertexArrays(1, &m_Address);
+}
+void VertexArray::Clear(){
+  Reset();
+  Buffers.clear();
+  InstanceBuffer = NULL;
+  IndexBuffer = NULL;
+}
+void VertexArray::ClearUnalloc(){
+  for(Buffer* buffer : Buffers){
+    delete buffer;
+  }
+  delete InstanceBuffer;
+  delete IndexBuffer;
+  Clear();
+}
+
 void VertexArray::RegisterAttribute(Buffer* buffer, unsigned int elementIndex, bool isInstanceBuffer){
   const BufferElement &element = buffer->GetLayout().GetElements()[elementIndex];
   buffer->Bind();
@@ -78,4 +115,8 @@ void VertexArray::Draw(unsigned int drawMode){
     }
   }
   Unbind();
+}
+
+std::vector<BufferElement> VertexArray::GetAttributes(){
+  return m_Attributes;
 }

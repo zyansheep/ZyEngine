@@ -1,15 +1,16 @@
 #pragma once
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
 #include <iostream>
 #include <string>
-#include "Preprocessor.h"
 
-#include "stb_image_write.h"
+#include <glad/glad.h> // IMPORTANT Include glad BEFORE glfw to prevent include errors!
+#include <GLFW/glfw3.h>
+
+#include "Preprocessor.h"
 
 //Evaluate preprocessor arguments
 #include "Core/Image.h"
+
 
 class Window{
 public:

@@ -1,9 +1,4 @@
 #include "Window.h"
-#include "Preprocessor.h"
-
-//For Screenshots
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "stb_image_write.h"
 
 Window::Window(int width, int height, std::string title, bool vsync)
 : m_Width(width), m_Height(height), m_Title(title){
@@ -69,6 +64,9 @@ void Window::Start(void (*loop)()){
 
   glfwTerminate();
 }
+
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image_write.h"
 bool Window::Screenshot(const std::string& path) {
   GLint viewport[4];
   glGetIntegerv(GL_VIEWPORT, viewport);

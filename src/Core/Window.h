@@ -52,6 +52,7 @@ public:
   bool Screenshot(const std::string& path);
   
   double GetFrameTime(){ return FrameTime; }
+  int GetFrameRate(){ return (int)(1 / FrameTime); }
   void SetVerticalSync(bool val){ glfwSwapInterval((int)val); }
   bool GetKey(int key){ return glfwGetKey(m_Window, key); }
   int GetWidth(){ return m_Width; }

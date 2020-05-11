@@ -77,9 +77,8 @@ bool Window::Screenshot(const std::string& path) {
   int height = viewport[3];
 
   char *data = (char*) malloc((size_t) (width * height * 3)); // 3 components (R, G, B)
-
   if (!data)
-      return 0;
+    return 0;
 
   glPixelStorei(GL_PACK_ALIGNMENT, 1);
   glReadPixels(x, y, width, height, GL_RGB, GL_UNSIGNED_BYTE, data);

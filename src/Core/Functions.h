@@ -15,6 +15,7 @@ static void printGlError(std::string str){
   std::cout << glGetError() << "-" << str << '\n';
 }
 
+//#include <linux/limits.h>
 static std::string readFileSync(std::string file_path){
   // Read the Vertex Shader code from the file
 	std::string Data;
@@ -25,6 +26,9 @@ static std::string readFileSync(std::string file_path){
 		Data = sstr.str();
 		DataStream.close();
 	}else{
+		/*char resolved_path[PATH_MAX]; 
+		realpath(file_path.c_str(), resolved_path); 
+		printf("\n%s\n",resolved_path);*/
 		printf("Impossible to open %s. Are you in the right directory?\n", file_path.c_str());
 	}
   return Data;

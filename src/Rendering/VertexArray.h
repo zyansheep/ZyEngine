@@ -1,9 +1,9 @@
+#pragma once
+
 #include <iostream>
 #include <vector>
 
 #include "Buffer.h"
-
-#pragma once
 
 class VertexArray {
 public:

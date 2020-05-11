@@ -19,7 +19,7 @@ public:
 };
 
 struct ModelGeneration {
-  static Model Square(float ex, float ey);
+  static Model Square(float ex, float ey, glm::vec3 position = glm::vec3(0.0f));
   static Model Icosphere(unsigned int recursionLevel);
   static Model Cube();
   static Model ObjFile(std::string path);

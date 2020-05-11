@@ -24,12 +24,12 @@ VertexArray* Model::MakeVertexArray(){
 
 #include <map>
 //ex = Extents x, ey = Extens y
-Model ModelGeneration::Square(float ex, float ey){
+Model ModelGeneration::Square(float ex, float ey, glm::vec3 position){
   return Model({
-    {-ex,-ey,0}, //Left Bottom
-    {-ex, ey,0}, //Left Top
-    { ex, ey,0}, //Right Top
-    { ex,-ey,0} //Right Bottom
+    position + glm::vec3{-ex,-ey,0}, //Left Bottom
+    position + glm::vec3{-ex, ey,0}, //Left Top
+    position + glm::vec3{ ex, ey,0}, //Right Top
+    position + glm::vec3{ ex,-ey,0} //Right Bottom
   },{
     {0,1,2},
     {0,2,3}

@@ -22,6 +22,7 @@
     #define ZY_BSD // FreeBSD, NetBSD, OpenBSD, DragonFly BSD
   #endif
 #elif defined(__APPLE__) && defined(__MACH__) // Apple OSX and iOS (Darwin)
+  #define ZY_APPLE
   #include <TargetConditionals.h>
   #if TARGET_IPHONE_SIMULATOR == 1
     #define ZY_PLATFORM "ios"

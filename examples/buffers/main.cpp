@@ -15,14 +15,14 @@ Shader shader;
 void setup(){
   shader = Shader("test/shaders/main.vert", "test/shaders/main.frag");
   
-  Buffer* cube_positions = new Buffer({{ShaderType::Float3, "a_position"}});
+  auto cube_positions = std::make_shared<Buffer>(BufferLayout{{ShaderType::Float3, "a_position"}});
   
   //Tell Renderer to create new buffer on graphics card
   //Call buffer->Modify(void* data, size_t size, size_t offset) to modify the allocated data
   cube_positions->New((float*)cube_vertices_, sizeof(cube_vertices_));
-  Buffer* cube_colors = new Buffer({{ShaderType::Float3, "a_color"}});
+  auto cube_colors = std::make_shared<Buffer>(BufferLayout{{ShaderType::Float3, "a_color"}});
   cube_colors->New((float*)cube_colors_, sizeof(cube_colors_));
-  cube = new Object(new VertexArray({cube_positions, cube_colors}), shader);
+  cube = new Object(std::shared_ptr<VertexArray>(new VertexArray({cube_positions, cube_colors})), shader);
   
   world.AddObject(cube);
   

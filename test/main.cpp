@@ -10,7 +10,7 @@
 #include "World/CameraController.h"
 #include "Core/Gui.h"
 #include "Model/Model.h"
-#include "Core/Functions.h"
+#include "Core/Utils.h"
 
 Window window = Window(1280,720, "Graphics Engine Testing");
 
@@ -34,7 +34,7 @@ ImVec4 clearColor = ImVec4(0.5,0.5,1.0,1.0);
 glm::vec3 color = glm::vec4(1.0,1.0,1.0,1.0);
 
 void setup(){
-  std::cout << "Current Dir: " << GetCurrentWorkingDir() << '\n';
+  std::cout << "Current Dir: " << Utils::GetCurrentWorkingDir() << '\n';
   shader = ShaderGeneration::Test();
   fileShader = ShaderGeneration::File("test/shaders/main.vert", "test/shaders/main.frag");
   
@@ -51,7 +51,7 @@ void setup(){
   suzanne = new Object(suzanneModel.MakeVertexArray(), shader);
   suzanne->Translate(glm::vec3(-5,0,0));
   
-  Buffer* plane_attrib_buffer = new Buffer({
+  auto plane_attrib_buffer = std::make_shared<Buffer>(BufferLayout{
     {ShaderType::Float3, "a_position"},
     {ShaderType::Float3, "a_color"}
   });
@@ -63,14 +63,14 @@ void setup(){
   };
   plane_attrib_buffer->New(plane_attrib_array, sizeof(plane_attrib_array));
   
-  Buffer* plane_index_buffer = new Buffer();
+  auto plane_index_buffer = std::make_shared<Buffer>();
   uint plane_index_array[] {
     0,1,2,
     0,2,3
   };
   plane_index_buffer->New(plane_index_array, sizeof(plane_index_array));
   
-  plane = new Object(new VertexArray({plane_attrib_buffer}, plane_index_buffer), shader);
+  plane = new Object(std::shared_ptr<VertexArray>(new VertexArray({plane_attrib_buffer}, plane_index_buffer) ), shader);
   plane->Rotate(90.0f, glm::vec3(0,0,1));
   plane->Translate({-8,-50,-50});
   
@@ -110,14 +110,15 @@ void loop(){
   world.Render();
   world.Draw();
   
-  gui.Begin("Hello There~");
+  gui.StartFrame();
+  ImGui::Begin("Hello There~");
     ImGui::Button("This is a button");
     ImGuiColorEditFlags misc_flags = (0) | (ImGuiColorEditFlags_NoDragDrop) | (ImGuiColorEditFlags_AlphaPreviewHalf) | (ImGuiColorEditFlags_NoOptions);
     ImGui::ColorPicker4("##picker", (float*)&clearColor, misc_flags | ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoSmallPreview);
     ImGui::Text("FrameTime: %f seconds", window.GetFrameTime());
     ImGui::Text("Mouse Position: (%d, %d)", window.MouseX, window.MouseY);
     ImGui::Text("Current Time: %f", window.RunTime);
-  gui.End();
+  ImGui::End();
   gui.Render();
   gui.Draw();
 }

@@ -19,14 +19,15 @@ void loop(){
   glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   
-  gui.Begin("Hello There~");
+  gui.StartFrame();
+  ImGui::Begin("Hello There~");
     ImGui::Button("This is a button");
     ImGuiColorEditFlags misc_flags = (0) | (ImGuiColorEditFlags_NoDragDrop) | (ImGuiColorEditFlags_AlphaPreviewHalf) | (ImGuiColorEditFlags_NoOptions);
     ImGui::ColorPicker4("##picker", (float*)&clearColor, misc_flags | ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoSmallPreview);
     ImGui::Text("FrameTime: %f seconds", window.GetFrameTime());
     ImGui::Text("Mouse Position: (%d, %d)", window.MouseX, window.MouseY);
     ImGui::Text("Current Time: %f", window.RunTime);
-  gui.End();
+  ImGui::End();
   gui.Render();
   gui.Draw();
 }

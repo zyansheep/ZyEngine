@@ -17,6 +17,17 @@ bool Image::Load(const char* filename, int desired_channels, bool flip){
 void Image::Unload(){
   stbi_image_free(Pixels);
 };
-GLFWimage Image::CreateGLFWImage(){
+GLFWimage Image::CreateGLFWImage() const {
   return {Width, Height, Pixels};
+}
+
+#include <glad/glad.h>
+unsigned int Image::GetGLChannel() const{
+	switch (Channels) {
+		case 1: return GL_RED;
+		case 2: return GL_RG;
+		case 3: return GL_RGB;
+		case 4: return GL_RGBA;
+	}
+	return 0;
 }

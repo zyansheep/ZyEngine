@@ -18,7 +18,8 @@ struct Image : public Asset {
   bool Load(const char* filename, int desired_channels = 0, bool flip = false);
   void Unload();
 
-  GLFWimage CreateGLFWImage();
+  GLFWimage CreateGLFWImage() const;
+  unsigned int GetGLChannel() const;
   int Width;
   int Height;
   int Channels;

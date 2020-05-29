@@ -1,20 +1,21 @@
 #include "Model.h"
 
-VertexArray* Model::MakeVertexArray(){
-  VertexArray* vao = new VertexArray;
+std::shared_ptr<VertexArray> Model::MakeVertexArray(){
+  std::shared_ptr<VertexArray> vao = std::make_shared<VertexArray>();
   std::cout << "Loading model with " << \
     Vertices.size() <<" Vertices, " << \
     Indices.size() << " Indices";
   //Load Vertices
-  vao->Buffers.push_back(new Buffer({{ShaderType::Float3, "a_position"}}));
+  // COMPILER BUG: https://marcofoco.com/not-so-perfect-forwarding/
+  vao->Buffers.push_back(std::make_shared<Buffer>(BufferLayout{{ShaderType::Float3, "a_position"}}));
   vao->Buffers[0]->New(&Vertices[0], sizeof(glm::vec3) * Vertices.size());
   //Load UVs
   if(UVs.size() > 0){
     std::cout << ", " << UVs.size() << " UVs";
-    vao->Buffers.push_back(new Buffer({{ShaderType::Float2, "a_texCoords"}}));
+    vao->Buffers.push_back(std::make_shared<Buffer>(BufferLayout{{ShaderType::Float2, "a_texCoords"}}));
     vao->Buffers[1]->New(&UVs[0], sizeof(glm::vec2) * UVs.size());
   }
-  vao->IndexBuffer = new Buffer;
+  vao->IndexBuffer.reset(new Buffer());
   vao->IndexBuffer->New(&Indices[0], sizeof(glm::uvec3) * Indices.size());
   vao->Configure();
   

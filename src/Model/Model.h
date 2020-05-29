@@ -15,12 +15,12 @@ public:
   std::vector<glm::vec2> UVs;
   std::vector<glm::vec3> Normals;
   
-  VertexArray* MakeVertexArray();
+  std::shared_ptr<VertexArray> MakeVertexArray();
 };
 
-struct ModelGeneration {
-  static Model Square(float ex, float ey, glm::vec3 position = glm::vec3(0.0f));
-  static Model Icosphere(unsigned int recursionLevel);
-  static Model Cube();
-  static Model ObjFile(std::string path);
+namespace ModelGeneration {
+	Model Square(float ex, float ey, glm::vec3 position = glm::vec3(0.0f));
+	Model Icosphere(unsigned int recursionLevel);
+	Model Cube();
+	Model ObjFile(std::string path);
 };

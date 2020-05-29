@@ -2,34 +2,34 @@
 
 #include <iostream>
 #include <vector>
+#include <memory>
 
 #include "Buffer.h"
 
 class VertexArray {
 public:
-  VertexArray(std::vector<Buffer*> buffers, Buffer* indexBuffer = NULL);
-  
+  VertexArray(const std::vector<std::shared_ptr<Buffer>>& buffers, const std::shared_ptr<Buffer>& indexBuffer = NULL);
   VertexArray();
+
   ~VertexArray();
   
-  void Bind();
-  void Unbind();
+  void Bind() const;
+  void Unbind() const;
+  void GenVertexArrays();
+  void DeleteVertexArrays();
   
   void Reset();
-  //Clear all linked buffers and reset Object
   void Clear();
-  //Deallocate items before Clearing
-  void ClearUnalloc();
   
-  void RegisterAttribute(Buffer* buffer, unsigned int elementIndex, bool isInstanceBuffer = false); //Register Buffer* into opengl VAO
+  void RegisterAttribute(const Buffer* buffer, unsigned int elementIndex, bool isInstanceBuffer = false); //Register Buffer* into opengl VAO
   void Configure(); //function called to configure all set buffers into vertexarray
-  void Draw(unsigned int drawMode = GL_TRIANGLES); //call gl draw function depending set buffers
-  std::vector<BufferElement> GetAttributes();
+  void Draw(unsigned int drawMode = GL_TRIANGLES) const; //call gl draw function depending set buffers
+  const std::vector<BufferElement>& GetAttributes() const;
   
   bool Loaded = false;
-  std::vector<Buffer*> Buffers;
-  Buffer* InstanceBuffer = NULL;
-  Buffer* IndexBuffer = NULL;
+  std::vector<std::shared_ptr<Buffer>> Buffers; //Allow for shared buffers across vertexarrays
+  std::shared_ptr<Buffer> IndexBuffer = NULL;
+  std::unique_ptr<Buffer> InstanceBuffer = NULL;
 private:
   std::vector<BufferElement> m_Attributes;
   unsigned int m_VertexCount = 0; //For Array Drawing

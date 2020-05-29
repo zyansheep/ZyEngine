@@ -1,23 +1,14 @@
-#pragma once
+#include "Utils.h"
+
+//using namespace utils
 
 #include <iostream>
-#include <string>
-#include <vector>
+
 #include <fstream>
 #include <sstream>
 
-#include "glad/glad.h"
-#include "Preprocessor.h"
-
-#pragma once
-
-static void printGlError(std::string str){
-  std::cout << glGetError() << "-" << str << '\n';
-}
-
-//#include <linux/limits.h>
-static std::string readFileSync(std::string file_path){
-  // Read the Vertex Shader code from the file
+std::string Utils::ReadFileSync(const std::string& file_path){
+	// Read the Vertex Shader code from the file
 	std::string Data;
 	std::ifstream DataStream(file_path, std::ios::in);
 	if(DataStream.is_open()){
@@ -25,15 +16,16 @@ static std::string readFileSync(std::string file_path){
 		sstr << DataStream.rdbuf();
 		Data = sstr.str();
 		DataStream.close();
-	}else{
+	} else {
 		/*char resolved_path[PATH_MAX]; 
 		realpath(file_path.c_str(), resolved_path); 
 		printf("\n%s\n",resolved_path);*/
-		printf("Impossible to open %s. Are you in the right directory?\n", file_path.c_str());
+		printf("[ZyEngine][error] Impossible to open %s. Are you in the right directory?\n", file_path.c_str());
 	}
-  return Data;
+	return Data;
 }
 
+#include "Preprocessor.h"
 #include <stdio.h>  /* defines FILENAME_MAX */
 // #define WINDOWS  /* uncomment this line to use it for windows.*/ 
 #ifdef ZY_WINDOWS
@@ -43,8 +35,8 @@ static std::string readFileSync(std::string file_path){
 #include <unistd.h>
 #define GetCurrentDir getcwd
 #endif
- 
-static std::string GetCurrentWorkingDir() {
+
+std::string Utils::GetCurrentWorkingDir() {
   char buff[FILENAME_MAX];
   GetCurrentDir( buff, FILENAME_MAX );
   std::string current_working_dir(buff);

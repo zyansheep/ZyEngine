@@ -2,71 +2,83 @@
 
 Window::Window(int width, int height, std::string title, bool vsync)
 : m_Width(width), m_Height(height), m_Title(title){
-  /* Initialize the library */
-  glfwSetErrorCallback(&GlobalErrorCallback);
-  if (!glfwInit()){
-    std::cout << "Could not initialize GLFW" << std::endl;
-    exit(-1);
-  }
-  
-  /* Create a windowed mode window and its OpenGL context */
-  //Enable opengl 3.3 core (most compatible across all OSs)
-  
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-  
-  //glfwWindowHint( GLFW_DOUBLEBUFFER, GL_FALSE );
-  
-  m_Window = glfwCreateWindow(m_Width, m_Height, m_Title.c_str(), NULL, NULL);
-  if (!m_Window){
-    glfwTerminate();
-    
-    std::cout << "Error could not create window: \"" + title + "\" Exiting..." << std::endl;
-    exit(-1);
-  }
-  glfwSetWindowUserPointer(m_Window, (void *)(this));
-  
-  glfwMakeContextCurrent(m_Window);
-  gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
-  glfwSwapInterval(1); //Vsync enable
-  
-  glfwSetWindowSizeCallback(m_Window, GlobalWindowResizeCallback);
-  
-  glfwSetKeyCallback(m_Window, GlobalKeyButtonCallback);
-  
-  glfwSetCursorPosCallback(m_Window, GlobalMouseMoveCallback);
-  glfwSetCursorEnterCallback(m_Window, GlobalMouseEnterCallback);
-  glfwSetMouseButtonCallback(m_Window, GlobalMouseButtonCallback);
-  glfwSetScrollCallback(m_Window, GlobalMouseScrollCallback);
-  
-  m_IsOpen = true;
+	CreateContext();
+}
+Window::~Window(){
+	DestroyContext();
+}
+
+void Window::CreateContext(){
+	/* Initialize the library */
+	glfwSetErrorCallback(&GlobalErrorCallback);
+	if (!glfwInit()){
+		std::cout << "Could not initialize GLFW" << std::endl;
+		exit(-1);
+	}
+	
+	/* Create a windowed mode window and its OpenGL context */
+	//Enable opengl 3.3 core (compatible with most OSs)
+	
+	//TODO: Dynamic Context Loading
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	
+	//glfwWindowHint( GLFW_DOUBLEBUFFER, GL_FALSE );
+	
+	m_Window = glfwCreateWindow(m_Width, m_Height, m_Title.c_str(), NULL, NULL);
+	if (!m_Window){
+		glfwTerminate();
+		
+		std::cout << "Error could not create window: \"" + m_Title + "\" Exiting..." << std::endl;
+		exit(-1);
+	}
+	glfwSetWindowUserPointer(m_Window, (void *)(this));
+	
+	glfwMakeContextCurrent(m_Window);
+	gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
+	glfwSwapInterval(1); //Vsync enable
+	
+	glfwSetWindowSizeCallback(m_Window, GlobalWindowResizeCallback);
+	
+	glfwSetKeyCallback(m_Window, GlobalKeyButtonCallback);
+	
+	glfwSetCursorPosCallback(m_Window, GlobalMouseMoveCallback);
+	glfwSetCursorEnterCallback(m_Window, GlobalMouseEnterCallback);
+	glfwSetMouseButtonCallback(m_Window, GlobalMouseButtonCallback);
+	glfwSetScrollCallback(m_Window, GlobalMouseScrollCallback);
+	
+	m_IsOpen = true;
+}
+void Window::DestroyContext(){
+	glfwDestroyWindow(m_Window);
+	glfwTerminate();
 }
 
 void Window::Start(void (*loop)()){
-  while (!glfwWindowShouldClose(m_Window)) {
-    // Measure speed
-    RunTime = glfwGetTime();
-    FrameTime = RunTime - m_PreviousFrameTime;
-    m_PreviousFrameTime = RunTime;
-    FrameCount += 1;
+	while (!glfwWindowShouldClose(m_Window)) {
+		// Measure speed
+		RunTime = glfwGetTime();
+		FrameTime = RunTime - m_PreviousRunTime;
+		m_PreviousRunTime = RunTime;
+		FrameCount += 1;
 
-    /* Render here */
-    loop();
-    
-    /* Swap display and drawing buffers */
-    glfwSwapBuffers(m_Window);
-    
-    /* Poll for and process events */
-    glfwPollEvents();
-  }
-
-  glfwTerminate();
+		/* Render here */
+		loop();
+		
+		/* Swap display and drawing buffers */
+		glfwSwapBuffers(m_Window);
+		
+		/* Poll for and process events */
+		glfwPollEvents();
+	}
 }
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
+
+//Save screenshot to file
 bool Window::Screenshot(const std::string& path) {
   GLint viewport[4];
   glGetIntegerv(GL_VIEWPORT, viewport);
@@ -97,12 +109,12 @@ Window* Window::GetHandler(GLFWwindow* window){
   return (Window*)(glfwGetWindowUserPointer(window));
 }
 
-void Window::SetIcons(Image* icons, size_t size){
-  GLFWimage* images = new GLFWimage[size];
-  for(size_t i = 0; i < size; i++){
+void Window::SetIcons(const std::vector<Image>& icons){
+  GLFWimage images[icons.size()];
+  for(size_t i = 0; i < icons.size(); i++){
     images[i] = icons[i].CreateGLFWImage();
   }
-  glfwSetWindowIcon(m_Window, size, images);
+  glfwSetWindowIcon(m_Window, icons.size(), images);
 }
 
 //Callbacks

@@ -14,57 +14,57 @@ BufferLayout::BufferLayout(std::initializer_list<BufferElement> elements)
 
 Buffer::Buffer()
 :m_Layout({{ShaderType::Int, "a_index"}}){
-  glGenBuffers(1, &m_Address);
-  m_Layout.SetTypeBuffer(GL_ELEMENT_ARRAY_BUFFER);
+	glGenBuffers(1, &m_Address);
+	m_Layout.SetTypeBuffer(GL_ELEMENT_ARRAY_BUFFER);
 }
 Buffer::Buffer(BufferLayout layout)
 :m_Layout(layout){
-  glGenBuffers(1, &m_Address);
+	glGenBuffers(1, &m_Address);
 }
 Buffer::~Buffer(){
-  glDeleteBuffers(1, &m_Address);
+	glDeleteBuffers(1, &m_Address);
 }
-void Buffer::Bind(){
-  glBindBuffer(m_Layout.GetTypeBuffer(), m_Address);
+void Buffer::Bind() const {
+	glBindBuffer(m_Layout.GetTypeBuffer(), m_Address);
 }
-void Buffer::Unbind(){
-  glBindBuffer(m_Layout.GetTypeBuffer(), 0);
+void Buffer::Unbind() const {
+	glBindBuffer(m_Layout.GetTypeBuffer(), 0);
 }
 void Buffer::New(void* data, size_t size){
-  m_Size = size;
-  Bind();
-  //Put information into buffer
-  glBufferData(
-    m_Layout.GetTypeBuffer(), 
-    m_Size, 
-    data, 
-    m_Layout.GetTypeDraw());
+	m_Size = size;
+	Bind();
+	//Put information into buffer
+	glBufferData(
+		m_Layout.GetTypeBuffer(), 
+		m_Size, 
+		data, 
+		m_Layout.GetTypeDraw());
 }
 template <typename Unknown>
 void Buffer::New(std::vector<Unknown> &data){
-  SetData(&data[0], data.size() * sizeof(Unknown));
+	SetData(&data[0], data.size() * sizeof(Unknown));
 }
 void Buffer::Modify(void* data, size_t size, size_t offset){
-  if(m_Size >= size - offset){
-    Bind();
-    glBufferSubData( 
-      m_Layout.GetTypeBuffer(),
-      offset,
-      size,
-      data
-    );
-  }
+	if(m_Size >= size - offset){
+		Bind();
+		glBufferSubData( 
+			m_Layout.GetTypeBuffer(),
+			offset,
+			size,
+			data
+		);
+	}
 }
 template <typename Unknown>
 void Buffer::Modify(std::vector<Unknown> &data, size_t offset){
-  size_t size = sizeof(Unknown) * data.size();
-  if(m_Size >= size - offset){
-    Bind();
-    glBufferSubData( 
-      m_Layout.GetTypeBuffer(),
-      offset,
-      size,
-      &data[0]
-    );
-  }
+	size_t size = sizeof(Unknown) * data.size();
+	if(m_Size >= size - offset){
+		Bind();
+		glBufferSubData( 
+			m_Layout.GetTypeBuffer(),
+			offset,
+			size,
+			&data[0]
+		);
+	}
 }

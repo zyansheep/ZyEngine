@@ -41,8 +41,8 @@ public:
   Buffer();
   Buffer(BufferLayout layout);
   ~Buffer();
-  void Bind();
-  void Unbind();
+  void Bind() const;
+  void Unbind() const;
   void New(void* data, size_t size);
   template<typename Unknown>
   void New(std::vector<Unknown> &data);
@@ -50,8 +50,8 @@ public:
   template<typename Unknown>
   void Modify(std::vector<Unknown> &data, size_t offset = 0);
   
-  BufferLayout& GetLayout(){ return m_Layout; }
-  unsigned int GetSize(){ return m_Size; }
+  const BufferLayout& GetLayout() const { return m_Layout; }
+  unsigned int GetSize() const { return m_Size; }
 private:
   BufferLayout m_Layout;
   unsigned int m_Address;

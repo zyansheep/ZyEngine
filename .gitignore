@@ -7,3 +7,4 @@ build*
 # Editor Config Files
 .clangd
 .vscode
+.flexelint

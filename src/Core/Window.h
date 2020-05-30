@@ -13,9 +13,10 @@
 #include "Core/Image.h"
 
 
-class Window{
+class Window {
 public:
-	Window(int width, int height, std::string title, bool vsync = true);
+	Window(int width, int height, const std::string& title, bool vsync = true);
+	Window(int width, int height, std::string&& title, bool vsync = true);
 	~Window();
 	GLFWwindow* GetNative();
 	static Window* GetHandler(GLFWwindow* window);

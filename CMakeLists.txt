@@ -12,7 +12,7 @@ option(ZYENGINE_BUILD_TESTS "Build ZyEngine test programs" ${ZYENGINE_STANDALONE
 #Options
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_GENERATOR "Ninja")
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 #Dependencies
 add_subdirectory(libs/glad)

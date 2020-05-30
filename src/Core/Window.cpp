@@ -1,7 +1,11 @@
 #include "Window.h"
 
-Window::Window(int width, int height, std::string title, bool vsync)
+Window::Window(int width, int height, const std::string& title, bool vsync)
 : m_Width(width), m_Height(height), m_Title(title){
+	CreateContext();
+}
+Window::Window(int width, int height, std::string&& title, bool vsync)
+: m_Width(width), m_Height(height), m_Title(std::move(title)){
 	CreateContext();
 }
 Window::~Window(){

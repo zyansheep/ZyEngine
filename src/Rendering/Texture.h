@@ -3,12 +3,12 @@
 #include <string>
 #include <vector>
 
-#include "Core/Image.h"
+#include "Asset/Image.h"
 
 //Texture can be any of 1D, 2D, 3D, Cube Map
 class Texture{
 public:
-	Texture(){m_Textures.resize(1);}
+	Texture();
 	Texture(const std::string& filename);
 	//Texture(const Image& image);
 	~Texture();
@@ -16,7 +16,6 @@ public:
 	void Load(const std::string& filename);
 	void Load(const Image& image);
 
-	bool Loaded() const;
 	void SetScaling(const unsigned int& scale_type) const;
 	void SetWrapping(const unsigned int& wrap_type) const;
 
@@ -28,10 +27,10 @@ public:
 	void SetParameter(const unsigned int& pname, const unsigned int& param) const;
 	void SetParameter(const unsigned int& pname, const float& param) const;
 	void Bind() const;
-	void BindToUnit(const unsigned int& unit) const;
+	void BindToUnit(const int& unit) const;
 	void Unbind() const;
 
-	static void SetActive(const unsigned int& unit);
+	static void SetActive(const int& unit);
 private:
 	unsigned int m_Type;
 	std::vector<unsigned int> m_Textures;

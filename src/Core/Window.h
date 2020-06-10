@@ -4,14 +4,14 @@
 #include <string>
 #include <vector>
 
+//#define ZY_WINDOW_LOG
 #include <glad/glad.h> // IMPORTANT Include glad BEFORE glfw to prevent include conflicts when glad attempts to load OpenGL!
 #include <GLFW/glfw3.h>
 
 #include "Preprocessor.h"
 
 //Evaluate preprocessor arguments
-#include "Core/Image.h"
-
+#include "Asset/Image.h"
 
 class Window {
 public:
@@ -22,8 +22,8 @@ public:
 	static Window* GetHandler(GLFWwindow* window);
 	
 private:
-	void CreateContext();
-	void DestroyContext();
+	void Create();
+	void Destroy();
 	//Callbacks
 	void WindowResizeCallback(int w, int h);
 	void KeyButtonCallback(int key, int scancode, int action, int mods);
@@ -39,8 +39,11 @@ private:
 	static void GlobalMouseMoveCallback(GLFWwindow* window, double xpos, double ypos);
 	static void GlobalMouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 	static void GlobalMouseScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
-	static void GlobalErrorCallback(int id, const char* error);
-	
+	#ifdef ZY_WINDOW_LOG
+	static void GlobalGLFWErrorCallback(int id, const char* error);
+	static void GlobalGLErrorCallback( GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam );
+	#endif
+
 	bool m_IsOpen;
 	GLFWwindow* m_Window;
 	int m_Width;
@@ -48,6 +51,8 @@ private:
 	std::string m_Title;
 
 	double m_PreviousRunTime = 0;
+
+	static unsigned int s_WindowCount;
 public:
 	double RunTime;
 	double FrameTime;

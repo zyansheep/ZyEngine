@@ -2,46 +2,56 @@
 
 Window::Window(int width, int height, const std::string& title, bool vsync)
 : m_Width(width), m_Height(height), m_Title(title){
-	CreateContext();
+	Create();
 }
 Window::Window(int width, int height, std::string&& title, bool vsync)
 : m_Width(width), m_Height(height), m_Title(std::move(title)){
-	CreateContext();
+	Create();
 }
 Window::~Window(){
-	DestroyContext();
+	Destroy();
 }
 
-void Window::CreateContext(){
+unsigned int Window::s_WindowCount = 0;
+void Window::Create(){
 	/* Initialize the library */
-	glfwSetErrorCallback(&GlobalErrorCallback);
-	if (!glfwInit()){
-		std::cout << "Could not initialize GLFW" << std::endl;
-		exit(-1);
+	if(s_WindowCount == 0){
+		#ifdef ZY_WINDOW_LOG
+		glfwSetErrorCallback(&GlobalGLFWErrorCallback);
+		#endif
+		if (!glfwInit()){
+			std::cout << "Could not initialize GLFW" << std::endl;
+			exit(-1);
+		}
+
+		/* Create a windowed mode window and its OpenGL context */
+		//Enable opengl 3.3 core (compatible with most OSs)
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	}
 	
-	/* Create a windowed mode window and its OpenGL context */
-	//Enable opengl 3.3 core (compatible with most OSs)
-	
-	//TODO: Dynamic Context Loading
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	
 	//glfwWindowHint( GLFW_DOUBLEBUFFER, GL_FALSE );
-	
 	m_Window = glfwCreateWindow(m_Width, m_Height, m_Title.c_str(), NULL, NULL);
 	if (!m_Window){
 		glfwTerminate();
-		
+
 		std::cout << "Error could not create window: \"" + m_Title + "\" Exiting..." << std::endl;
 		exit(-1);
 	}
 	glfwSetWindowUserPointer(m_Window, (void *)(this));
-	
 	glfwMakeContextCurrent(m_Window);
-	gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
+	
+	//Load OpenGL if there are windows
+	if(s_WindowCount <= 1){
+		gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
+		glEnable              ( GL_DEBUG_OUTPUT );
+		#ifdef ZY_WINDOW_LOG
+		glDebugMessageCallback(GlobalGLErrorCallback, 0);
+		#endif
+	}
+	
 	glfwSwapInterval(1); //Vsync enable
 	
 	glfwSetWindowSizeCallback(m_Window, GlobalWindowResizeCallback);
@@ -54,10 +64,16 @@ void Window::CreateContext(){
 	glfwSetScrollCallback(m_Window, GlobalMouseScrollCallback);
 	
 	m_IsOpen = true;
+	s_WindowCount++;
 }
-void Window::DestroyContext(){
+void Window::Destroy(){
 	glfwDestroyWindow(m_Window);
-	glfwTerminate();
+	s_WindowCount--;
+	if(s_WindowCount == 0){
+		glfwTerminate();
+	}
+
+	m_IsOpen = false;
 }
 
 void Window::Start(void (*loop)()){
@@ -165,6 +181,14 @@ void Window::GlobalMouseButtonCallback(GLFWwindow* window, int button, int actio
 void Window::GlobalMouseScrollCallback(GLFWwindow* window, double xoffset, double yoffset){
   Window::GetHandler(window)->MouseScrollCallback(xoffset, yoffset);
 }
-void Window::GlobalErrorCallback(int id, const char* error){
-  std::cout << "Error: glfw: " << id << ":" << error << std::endl;
+
+#ifdef ZY_WINDOW_LOG
+void Window::GlobalGLErrorCallback( GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam ){
+	fprintf( stdout, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
+        ( type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "" ),
+        type, severity, message );
 }
+void Window::GlobalGLFWErrorCallback(int id, const char* error){
+	fprintf(stdout, "Error: glfw: %d, %s", id, error);
+}
+#endif
